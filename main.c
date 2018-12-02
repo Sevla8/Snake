@@ -16,15 +16,24 @@ int main(int argc, char* argv[]) {
     int y = (ysup+yinf)/2;
     int x1 = TailleChaineEcran("SNAKE", 2)/2;
     int x2 = TailleChaineEcran("click or touch to continue", 2)/2;
+    int x3 = TailleChaineEcran("START", 2)/2;
+    int x4 = TailleChaineEcran("SETTINGS", 2)/2;
+    int x5 = TailleChaineEcran("QUIT", 2)/2;
 
     ChoisirEcran(1);
     EffacerEcran(CouleurParNom("black"));
    	EcrireTexte(250-x1, 250-y, "SNAKE", 2);
    	EcrireTexte(250-x2, 280-y, "click or touch to continue", 2);
 
+   	ChoisirEcran(2);
+    EffacerEcran(CouleurParNom("black"));
+   	EcrireTexte(250-x3, 200-y, "START", 2);
+   	EcrireTexte(250-x4, 250-y, "SETTINGS", 2);
+   	EcrireTexte(250-x5, 300-y, "QUIT", 2);
+
    	ChoisirEcran(0);
     
-    while (ToucheEnAttente() == 0 && SourisCliquee() == 0){
+    while (!ToucheEnAttente() && !SourisCliquee()){
 
     	if (Microsecondes() >= time0 + 0.5*seconde) {
     		CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
@@ -32,5 +41,15 @@ int main(int argc, char* argv[]) {
     		EffacerEcran(CouleurParNom("black"));
     		time0 = Microsecondes();
     	}
+	}
+
+	CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
+	while (!SourisCliquee()) {}
+	SourisPosition();
+
+	//definir struct case;
+
+	while (True) {
+		
 	}
 }

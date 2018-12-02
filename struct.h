@@ -8,8 +8,14 @@ struct coord {
 
 typedef struct coord Tcoord;
 
+struct square {
+	Tcoord square[10*10];
+};
+
+typedef struct square Tsquare;
+
 struct snake {
-	Tcoord snake[500*500];
+	Tsquare snake[500*500];
 };
 
 typedef struct snake Tsnake;
