@@ -39,7 +39,12 @@ int main(int argc, char* argv[]) {
 
     CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
 
-	while (True) {
-		
-	}
+	while(!SourisCliquee()){}
+    	SourisPosition();
+   	 if (_X>=250-x5 && _X<=250+x5 && _Y>=300-y && _Y<=300+y)
+   	 {
+     		 FermerGraphique();
+   	 }
+  
+  }
 }
