@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <graph.h>
 
-int main(int argc, char* argv[]) {
+void Menu() {
 
   InitialiserGraphique();
   CreerFenetre(50,50,500,500);
@@ -30,10 +30,6 @@ int main(int argc, char* argv[]) {
  	EcrireTexte(250-x3, 200-y, "START", 2);
  	EcrireTexte(250-x4, 250-y, "SETTINGS", 2);
  	EcrireTexte(250-x5, 300-y, "QUIT", 2);
-
-  ChoisirEcran(3);
-  EffacerEcran(CouleurParNom("black"));
-  ///////a finir////////
 
  	ChoisirEcran(0);
 
@@ -66,9 +62,5 @@ int main(int argc, char* argv[]) {
   }
 
   while (1) {}
-  
-  exit(0);
+
 }
-
-
-
