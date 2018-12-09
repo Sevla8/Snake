@@ -1,4 +1,4 @@
-OFILES = main.o meno.o settings.o
+OFILES = main.o menu.o settings.o
 
 GCCFLAGS = -Wall -ansi -pedantic -g
 
