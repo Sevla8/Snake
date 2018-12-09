@@ -1,44 +1,15 @@
-# TP 19 Exercice 1 : fichier Makefile
+OFILES = main.o meno.o settings.o
 
-# CHAPITRE 1 : BUT FINAL
+GCCFLAGS = -Wall -ansi -pedantic -g
 
-but : exo1
+exe : $(OFILES)
+	gcc $(GCCFLAGS) -o exe $(OFILES)
 
-# CHAPITRE 2 : VARIABLES
+menu.o : menu.c menu.h
+	gcc -c menu.c
 
-OFILES = lire.o \
-         personne.o \
-         repertoire.o \
-         options.o \
-         main.o
-
-CC = gcc
-
-CFLAGS = -Wall -ansi -pedantic -g
-
-# CHAPITRE 3 : DEPENDANCES (REGLES IMPLICITES)
-
-personne.o : personne.h lire.h
-
-repertoire.o : repertoire.h personne.h
-
-options.o : options.h
-
-main.o : personne.h repertoire.h options.h
-
-#CHAPITRE 4 : DEPENDANCES AVEC COMMANDES
-
-lire.o : lire.s lire.h
-	as -o lire.o lire.s
-
-exo1 : $(OFILES)
-	$(CC) $(CFLAGS) -o exo1 $(OFILES)
-
-#CHAPITRE 5 : NETTOYAGE DES FICHIERS GENERES
+settings.o : settings.c settings.h
+	gcc -c settings.c
 
 clean :
-	-rm -f $(OFILES) exo1
-
-#CHAPITRE 6 : BUTS FACTICES
-
-.PHONY : but clean
+	-rm -f $(OFILES) exe
