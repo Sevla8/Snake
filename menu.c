@@ -1,15 +1,6 @@
-#include <stdlib.h>
-#include <graph.h>
+#include "menu.h"
 
 void Menu() {
-
-  InitialiserGraphique();
-  CreerFenetre(50,50,500,500);
-  EffacerEcran(CouleurParNom("black"));
-  ChoisirCouleurDessin(CouleurParNom("white"));
-
-  unsigned long time0 = Microsecondes();
-  unsigned long seconde = 1000000;
 
   int ysup = TailleSupPolice(2);
   int yinf = TailleInfPolice(2);
