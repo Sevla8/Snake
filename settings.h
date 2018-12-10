@@ -1,9 +1,9 @@
-#include <stdlib.h>
-#include <graph.h>
-
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-void Settings();
+#include <stdlib.h>
+#include <graph.h>
+
+void Settings(int*, int*, int*, int*);
 
 #endif

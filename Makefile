@@ -1,16 +1,22 @@
 OFILES = main.o \
 		 menu.o \
-		 settings.o 
+		 settings.o \
+		 start.o
 
-HFILES = main.h \
-		 menu.h \
+HFILES = menu.h \
 		 settings.h \
 		 defines.h \
 		 coord.h \
 		 square.h \
 		 grid.h \
 		 snake.h \
-		 player.h
+		 player.h \
+		 start.h
+
+CFILES = main.c \
+         menu.c \
+         settings.c \
+         start.c
 
 GCCFLAGS = -Wall -ansi -pedantic -g
 
@@ -28,5 +34,10 @@ menu.o : menu.c menu.h settings.h
 settings.o : settings.c settings.h
 	gcc -c settings.c
 
+start.o : start.c start.h
+	gcc -c start.c
+
 clean :
 	-rm -f $(OFILES) exe
+
+.PHONY : clean
