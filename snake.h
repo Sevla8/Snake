@@ -4,7 +4,6 @@
 #include "coord.h"
 
 struct snake {
-	Tcoord snake;
 	int direction;
 	int flow;
 	int speed;

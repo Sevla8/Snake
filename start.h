@@ -1,9 +1,6 @@
 #ifndef START_H
 #define START_H
 
-#include <stdlib.h>
-#include <graph.h>
-
-void Start();
+void Start(int, int, int, int);
 
 #endif

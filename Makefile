@@ -1,22 +1,24 @@
 OFILES = main.o \
 		 menu.o \
 		 settings.o \
-		 start.o
+		 start.o \
+		 print.o
 
 HFILES = menu.h \
 		 settings.h \
 		 defines.h \
 		 coord.h \
-		 square.h \
-		 grid.h \
+		 case.h \
 		 snake.h \
 		 player.h \
-		 start.h
+		 start.h \
+		 print.h
 
 CFILES = main.c \
          menu.c \
          settings.c \
-         start.c
+         start.c \
+         print.c
 
 GCCFLAGS = -Wall -ansi -pedantic -g
 
@@ -36,6 +38,9 @@ settings.o : settings.c settings.h
 
 start.o : start.c start.h
 	gcc -c start.c
+
+print.o : print.c print.h case.h
+	gcc -c print.c
 
 clean :
 	-rm -f $(OFILES) exe

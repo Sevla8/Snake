@@ -1,4 +1,6 @@
 #include "print.h"
+#include "defines.h"
+#include <graph.h>
 
 void print(Tcase** grille, int heigth, int width) {
 
@@ -8,19 +10,19 @@ void print(Tcase** grille, int heigth, int width) {
   		for (int j = 0; j < width; j = j+1) {
   			if (grille[i][j] == apple) {
   				ChoisirCouleurDessin(CouleurParNom("red"));
-  				RemplirRectangle(i*tailleCase, j*tailleCase, tailleCase, tailleCase);
+  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
   			}
   			else if (grille[i][j] == grass) {
-  				ChoisirCouleurDessin(CouleurParNom("red"));
-  				RemplirRectangle(i*tailleCase, j*tailleCase, tailleCase, tailleCase);
+  				ChoisirCouleurDessin(CouleurParNom("green"));
+  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
   			}
   			else if (grille[i][j] == barrier) {
   				ChoisirCouleurDessin(CouleurParNom("grey"));
-  				RemplirRectangle(i*tailleCase, j*tailleCase, tailleCase, tailleCase);
+  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
   			}
   			else if (grille[i][j] == snake) {
   				ChoisirCouleurDessin(CouleurParNom("brown"));
-  				RemplirRectangle(i*tailleCase, j*tailleCase, tailleCase, tailleCase);
+  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
   			}
   		}
   	}

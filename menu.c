@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "settings.h"
 #include "start.h"
+#include <graph.h>
 
 void Menu() {
 
@@ -25,6 +26,7 @@ void Menu() {
 
  	ChoisirEcran(2);
   EffacerEcran(CouleurParNom("black"));
+  EcrireTexte(3, 10, "Menu", 0);
  	EcrireTexte(250-x3/2, 200-y/2, "START", 2);
  	EcrireTexte(250-x4/2, 250-y/2, "SETTINGS", 2);
  	EcrireTexte(250-x5/2, 300-y/2, "QUIT", 2);
@@ -62,7 +64,7 @@ void Menu() {
 
     if (_X >= 250-x3 && _X <= 250+x3 && _Y >= 200-y && _Y <= 200+y) {
 
-      Start();
+      Start(gridWidth, gridHeigth, appleAmount, snakeSize);
 
     }
 
