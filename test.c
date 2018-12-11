@@ -1,33 +1,49 @@
-#include <stdlib.h>
-#include <graph.h>
 
-int main(int argc, char* argv[]) {
+OFILES = main.o \
+		 menu.o \
+		 settings.o \
+		 start.o \
+		 print.o
 
-	enum Case {
-		grass,
-		snake,
-		apple,
-		barrier
-	};
+HFILES = menu.h \
+		 settings.h \
+		 defines.h \
+		 coord.h \
+		 square.h \
+		 grid.h \
+		 snake.h \
+		 player.h \
+		 start.h \
+		 print.h
 
-	typedef enum Case Tcase;
+CFILES = main.c \
+         menu.c \
+         settings.c \
+         start.c \
+         print.c
 
-	struct coord {
-		int x;
-		int y;
-	};
+GCCFLAGS = -Wall -ansi -pedantic -g
 
-	typedef struct coord Tcoord;
+GRAPH = -lgraph -I/usr/local/include -L/usr/local/lib
 
-	int longueur = 40;
-	int largeur = 60;
+exe : $(OFILES)
+	gcc $(GCCFLAGS) -o exe $(OFILES) $(GRAPH)
 
-	int taillePixel = 5;
+main.o : main.c $(HFILES)
+	gcc -c main.c
 
-	int longueurEcran = longueur * taillePixel;
-	int largeurEcran = largeur * taillePixel;
+menu.o : menu.c menu.h settings.h
+	gcc -c menu.c
 
-	InitialiserGraphique();
-	CreerFenetre(50, 50, longueurEcran, largeurEcran);
+settings.o : settings.c settings.h
+	gcc -c settings.c
 
-}
+start.o : start.c start.h
+	gcc -c start.c
+
+print.o : print.c print.h
+	gcc -c print.c
+clean :
+	-rm -f $(OFILES) exe
+
+.PHONY : clean
