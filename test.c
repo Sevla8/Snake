@@ -41,7 +41,7 @@ settings.o : settings.c settings.h
 start.o : start.c start.h
 	gcc -c start.c
 
-print.o : print.c print.h
+print.o : print.c print.h case.h
 	gcc -c print.c
 clean :
 	-rm -f $(OFILES) exe
