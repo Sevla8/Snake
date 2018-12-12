@@ -2,7 +2,7 @@ OFILES = main.o \
 		 menu.o \
 		 settings.o \
 		 start.o \
-		 print.o
+		 game.o
 
 HFILES = menu.h \
 		 settings.h \
@@ -12,13 +12,13 @@ HFILES = menu.h \
 		 snake.h \
 		 player.h \
 		 start.h \
-		 print.h
+		 game.h
 
 CFILES = main.c \
          menu.c \
          settings.c \
          start.c \
-         print.c
+         game.c
 
 GCCFLAGS = -Wall -ansi -pedantic -g
 
@@ -39,10 +39,10 @@ settings.o : settings.c settings.h
 start.o : start.c start.h
 	gcc -c start.c
 
-print.o : print.c print.h case.h
-	gcc -c print.c
+game.o : game.c game.h case.h snake.h defines.h
+	gcc -c game.c
 
 clean :
-	-rm -f $(OFILES) exe
+	-rm -f $(OFILES)
 
 .PHONY : clean

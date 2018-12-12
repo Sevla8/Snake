@@ -6,6 +6,6 @@ struct player {
 	int level;
 };
 
-typedef struct player Tplayer;
+typedef struct player S_player;
 
 #endif

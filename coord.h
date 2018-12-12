@@ -6,6 +6,6 @@ struct coord {
 	int y;
 };
 
-typedef struct coord Tcoord;
+typedef struct coord S_coord;
 
 #endif

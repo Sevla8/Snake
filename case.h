@@ -2,12 +2,12 @@
 #define CASE_H
 
 enum Case {
-	grass,
-	snake,
-	apple,
-	barrier
+	GRASS,
+	SNAKE,
+	APPLE,
+	BARRIER
 };
 
-typedef enum Case Tcase;
+typedef enum Case E_case;
 
 #endif

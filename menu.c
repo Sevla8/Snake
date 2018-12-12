@@ -3,7 +3,7 @@
 #include "start.h"
 #include <graph.h>
 
-void Menu() {
+int Menu() {
 
   int gridWidth = 60;
   int gridHeigth = 40;
@@ -71,5 +71,7 @@ void Menu() {
   }
 
   while (1) {}
+
+    exit(0);
 
 }

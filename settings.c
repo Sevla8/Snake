@@ -1,7 +1,7 @@
 #include "settings.h"
 #include <graph.h>
 
-void Settings(int* gridWidth, int* gridHeigth, int* appleAmount, int* snakeSize) {
+int Settings(int* gridWidth, int* gridHeigth, int* appleAmount, int* snakeSize) {
 
     int y2sup = TailleSupPolice(2);
     int y2inf = TailleInfPolice(2);
@@ -106,4 +106,6 @@ void Settings(int* gridWidth, int* gridHeigth, int* appleAmount, int* snakeSize)
 	// }	
 
 	// while (1) {}
+
+	exit(0);
 }

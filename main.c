@@ -7,6 +7,7 @@
 #include "player.h"
 #include "menu.h"
 #include "settings.h"
+#include "game.h"
 
 int main(int argc, char* argv[]) {
 

@@ -2,15 +2,16 @@
 #define SNAKE_H
 
 #include "coord.h"
+#include "direction.h"
 
 struct snake {
-	int direction;
-	int flow;
+	E_direction direction;
 	int speed;
 	int size;
-	Tcoord head;
+	S_coord head;
+	S_coord* body;
 };
 
-typedef struct snake Tsnake;
+typedef struct snake S_snake;
 
 #endif
