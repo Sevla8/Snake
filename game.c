@@ -59,16 +59,16 @@ int change_direction(S_snake* snake) {
 		
 		int T = Touche();
 		
-		if (T == XK_Right) {
+		if (T == XK_Right && snake->direction != LEFT) {
 			snake->direction = RIGHT;
 		}
-		else if (T == XK_Left) {
+		else if (T == XK_Left && snake->direction != RIGHT) {
 			snake->direction = LEFT;
 		}
-		else if (T == XK_Up) {
+		else if (T == XK_Up && snake->direction != DOWN) {
 			snake->direction = UP;
 		}
-		else if (T == XK_Down) {
+		else if (T == XK_Down && snake->direction != UP) {
 			snake->direction = DOWN;
 		}
 	}
@@ -80,9 +80,19 @@ int crash(S_snake snake, E_case** grid) {
 	if (grid[snake->head.x][snake->head.y] == BARRIER) {
 		return 1;
 	}
-	else {
-		return 0;
+
+	int s = snake->size;
+	for (int i = 0; i < s; i = i+1) {
+		for (int j = 0; j < s; j = j+1) {
+			if (snake->body[i] == snake->body[j]) {
+				return 1;
+			}
+		}
 	}
+
+	//serpent sort du terrain
+
+	return 0;
 }
 
 int eat_apple(S_snake* sanke, E_case grid) {

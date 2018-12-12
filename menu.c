@@ -6,9 +6,11 @@
 int Menu() {
 
   int gridWidth = 60;
-  int gridHeigth = 40;
+  int gridLength = 40;
   int appleAmount = 5;
   int snakeSize = 10;
+  int barrierAmount = 0;
+  int snakeSpeed = 1;
 
   int ysup = TailleSupPolice(2);
   int yinf = TailleInfPolice(2);
@@ -56,7 +58,7 @@ int Menu() {
 
     if (_X >= 250-x4 && _X <= 250+x4 && _Y >= 250-y && _Y <= 250+y) {
 
-      Settings(&gridWidth, &gridHeigth, &appleAmount, &snakeSize);
+      Settings(&gridWidth, &gridLength, &appleAmount, &snakeSize);
 
     }
 
@@ -64,7 +66,7 @@ int Menu() {
 
     if (_X >= 250-x3 && _X <= 250+x3 && _Y >= 200-y && _Y <= 200+y) {
 
-      Start(gridWidth, gridHeigth, appleAmount, snakeSize);
+      Start(gridWidth, gridLength, appleAmount, snakeSize, barrierAmount, snakeSpeed);
 
     }
 

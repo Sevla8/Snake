@@ -12,32 +12,13 @@
 int main(int argc, char* argv[]) {
 
     InitialiserGraphique();
-  	CreerFenetre(50,50,500,500);
+  	CreerFenetre(5,5,1000,1000);
   	EffacerEcran(CouleurParNom("black"));
   	ChoisirCouleurDessin(CouleurParNom("white"));
 
-  	//Menu();
+  	Menu();
 
-  	ChoisirEcran(0);
-  	EffacerEcran(CouleurParNom("green"));
+    FermerGraphique();
 
-  	// Tcase grille[40][60];
-
-  	// for (int i = 0; i < 40; i = i+1) {
-  	// 	for (int j = 0; j < 60; j = j+1) {
-  	// 		grille[i][j] = grass;
-  	// 	}
-  	// }
-
-  	// for (int i = 0; i < 40; i = i+1) {
-  	// 	for (int j = 0; j < 60; j = j+1) {
-  	// 		if (grille[i][j] == grass) {
-  	// 			RemplirRectangle;
-  	// 		}
-  	// 	}
-  	// }
-
-
-	
-	exit(0);
+	  exit(0);
 }

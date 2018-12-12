@@ -30,13 +30,13 @@ exe : $(OFILES)
 main.o : main.c $(HFILES)
 	gcc -c main.c
 
-menu.o : menu.c menu.h settings.h
+menu.o : menu.c menu.h settings.h start.h
 	gcc -c menu.c
 
 settings.o : settings.c settings.h
 	gcc -c settings.c
 
-start.o : start.c start.h
+start.o : start.c start.h case.h coord.h snake.h direction.h
 	gcc -c start.c
 
 game.o : game.c game.h case.h snake.h defines.h
