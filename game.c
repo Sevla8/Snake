@@ -1,36 +1,34 @@
 #include "game.h"
 
-int print(E_case** grid, int length, int width) {
+void print(E_case** grid, int width, int length) {
 
 	ChoisirEcran(1);
 
-  	for (int i = 0; i < length; i = i+1) {
-		for (int j = 0; j < width; j = j+1) {
-			if (grid[i][j] == APPLE) {
+  	for (int i = 0; i < width; i += 1) {
+		for (int j = 0; j < length; j += 1) {
+			if (grid[j][i] == APPLE) {
 				ChoisirCouleurDessin(CouleurParNom("red"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
- 			else if (grid[i][j] == GRASS) {
+ 			else if (grid[j][i] == GRASS) {
  				ChoisirCouleurDessin(CouleurParNom("green"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
- 			else if (grid[i][j] == BARRIER) {
- 				ChoisirCouleurDessin(CouleurParNom("grey"));
+ 			else if (grid[j][i] == BARRIER) {
+ 				ChoisirCouleurDessin(CouleurParNom("black"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
- 			else if (grid[i][j] == SNAKE) {
- 				ChoisirCouleurDessin(CouleurParNom("brown"));
+ 			else if (grid[j][i] == SNAKE) {
+ 				ChoisirCouleurDessin(CouleurParNom("yellow"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
  		}
  	}
 
- 	CopierZone(1, 0, 0, 0, heigth*SIZE, width*SIZE, 0, 0);
-
-  	exit(0);
+ 	CopierZone(1, 0, 0, 0, width*SIZE, length*SIZE, 0, 0);
 }
 
-int keep_moving(S_snake* snake, E_case** grid) {
+void keep_moving(S_snake* snake, E_case** grid) {
 
 	if (snake->direction == RIGHT) {
 		snake->head.x += 1;
@@ -45,15 +43,13 @@ int keep_moving(S_snake* snake, E_case** grid) {
 		snake->head.y += 1;
 	}
 
-	for (int i = 0; i < snake->size-1; i = i+1) {
+	for (int i = 0; i < snake->size-1; i += 1) {
 		snake->body[i] = snake->body[i+1];
 	}
 	snake->body[snake->size-1] = snake->head;
-
-	exit(0);
 }
 
-int change_direction(S_snake* snake) {
+void change_direction(S_snake* snake) {
 
 	if (ToucheEnAttente()) {
 		
@@ -72,21 +68,18 @@ int change_direction(S_snake* snake) {
 			snake->direction = DOWN;
 		}
 	}
-	exit(0);
 }
 
 int crash(S_snake snake, E_case** grid) {
 
-	if (grid[snake->head.x][snake->head.y] == BARRIER) {
+	if (grid[snake.head.x][snake.head.y] == BARRIER) {
 		return 1;
 	}
 
-	int s = snake->size;
-	for (int i = 0; i < s; i = i+1) {
-		for (int j = 0; j < s; j = j+1) {
-			if (snake->body[i] == snake->body[j]) {
-				return 1;
-			}
+	int s = snake.size;
+	for (int i = 0; i < s; i += 1) {
+		if (snake.body[i].x == snake.head.x && snake.body[i].y == snake.head.y) {
+			return 1;
 		}
 	}
 
@@ -95,7 +88,7 @@ int crash(S_snake snake, E_case** grid) {
 	return 0;
 }
 
-int eat_apple(S_snake* sanke, E_case grid) {
+void eat_apple(S_snake* snake, E_case** grid) {
 
 	if (grid[snake->head.x][snake->head.y] == APPLE) {
 
@@ -118,5 +111,4 @@ int eat_apple(S_snake* sanke, E_case grid) {
 
 		snake->body[snake->size-1] = snake->head;
 	}
-	exit(0);
 }

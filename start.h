@@ -7,7 +7,8 @@
 #include <stdlib.h>
 #include <graph.h>
 #include "direction.h"
+#include "game.h"
 
-int Start(int, int, int, int, int, int);
+void Start(int, int, int, int, int, int);
 
 #endif

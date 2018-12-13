@@ -1,24 +1,19 @@
-#include <stdlib.h>
 #include <graph.h>
-#include "defines.h"
-#include "coord.h"
-#include "case.h"
-#include "snake.h"
-#include "player.h"
 #include "menu.h"
-#include "settings.h"
-#include "game.h"
+#include "start.h"
 
 int main(int argc, char* argv[]) {
 
     InitialiserGraphique();
   	CreerFenetre(5,5,1000,1000);
-  	EffacerEcran(CouleurParNom("black"));
-  	ChoisirCouleurDessin(CouleurParNom("white"));
 
-  	Menu();
+  	int gridLength = 40, gridWidth = 60, appleAmount = 5, snakeSize = 10, barrierAmount = 0, snakeSpeed = 1;
+
+  	//Menu(&gridLength, &gridWidth, &appleAmount, &snakeSize, &barrierAmount, &snakeSpeed);
+
+  	Start(gridWidth, gridLength, appleAmount, snakeSize, barrierAmount, snakeSpeed);
 
     FermerGraphique();
 
-	  exit(0);
+	exit(0);
 }
