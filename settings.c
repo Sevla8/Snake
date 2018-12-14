@@ -107,5 +107,5 @@ int Settings(int* gridWidth, int* gridHeigth, int* appleAmount, int* snakeSize) 
 
 	// while (1) {}
 
-	exit(0);
+	return 0;
 }

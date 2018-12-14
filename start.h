@@ -8,7 +8,8 @@
 #include <graph.h>
 #include "direction.h"
 #include "game.h"
+#include "parameter.h"
 
-void Start(int, int, int, int, int, int);
+void Start(S_parameter*);
 
 #endif

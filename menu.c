@@ -66,7 +66,7 @@ int Menu() {
 
     if (_X >= 250-x3 && _X <= 250+x3 && _Y >= 200-y && _Y <= 200+y) {
 
-      Start(gridWidth, gridLength, appleAmount, snakeSize, barrierAmount, snakeSpeed);
+      //Start(gridWidth, gridLength, appleAmount, snakeSize, barrierAmount, snakeSpeed);
 
     }
 

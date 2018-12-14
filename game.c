@@ -6,19 +6,19 @@ void print(E_case** grid, int width, int length) {
 
   	for (int i = 0; i < width; i += 1) {
 		for (int j = 0; j < length; j += 1) {
-			if (grid[j][i] == APPLE) {
+			if (grid[i][j] == APPLE) {
 				ChoisirCouleurDessin(CouleurParNom("red"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
- 			else if (grid[j][i] == GRASS) {
+ 			else if (grid[i][j] == GRASS) {
  				ChoisirCouleurDessin(CouleurParNom("green"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
- 			else if (grid[j][i] == BARRIER) {
+ 			else if (grid[i][j] == BARRIER) {
  				ChoisirCouleurDessin(CouleurParNom("black"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
- 			else if (grid[j][i] == SNAKE) {
+ 			else if (grid[i][j] == SNAKE) {
  				ChoisirCouleurDessin(CouleurParNom("yellow"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
@@ -43,7 +43,7 @@ void keep_moving(S_snake* snake, E_case** grid) {
 		snake->head.y += 1;
 	}
 
-	for (int i = 0; i < snake->size-1; i += 1) {
+	for (int i = 0; i < snake->size - 1; i += 1) {
 		snake->body[i] = snake->body[i+1];
 	}
 	snake->body[snake->size-1] = snake->head;
@@ -111,4 +111,11 @@ void eat_apple(S_snake* snake, E_case** grid) {
 
 		snake->body[snake->size-1] = snake->head;
 	}
+}
+
+void actualize_grid(E_case** grid, S_snake snake) {
+
+	grid[snake.body[0].x][snake.body[0].y] = GRASS;
+	grid[snake.head.x][snake.head.y] = SNAKE;
+	grid[snake.body[snake.size-2].x][snake.body[snake.size-2].y] = SNAKE;
 }

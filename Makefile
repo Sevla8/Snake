@@ -9,6 +9,7 @@ HFILES = menu.h \
 		 defines.h \
 		 coord.h \
 		 case.h \
+		 parameter.h \
 		 snake.h \
 		 player.h \
 		 start.h \
@@ -24,10 +25,10 @@ GCCFLAGS = -Wall -ansi -pedantic -g
 
 GRAPH = -lgraph -I/usr/local/include -L/usr/local/lib
 
-exe : $(OFILES)
-	gcc $(GCCFLAGS) -o exe $(OFILES) $(GRAPH)
+a.out : $(OFILES)
+	gcc $(GCCFLAGS) -o a.out $(OFILES) $(GRAPH)
 
-main.o : main.c $(HFILES)
+main.o : main.c parameter.h menu.h start.h
 	gcc -c main.c
 
 menu.o : menu.c menu.h settings.h start.h
@@ -43,6 +44,6 @@ game.o : game.c game.h case.h snake.h defines.h
 	gcc -c game.c
 
 clean :
-	-rm -f $(OFILES)
+	-rm -f $(OFILES) a.out
 
 .PHONY : clean

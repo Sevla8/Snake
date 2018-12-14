@@ -1,4 +1,5 @@
 #include <graph.h>
+#include "parameter.h"
 #include "menu.h"
 #include "start.h"
 
@@ -7,11 +8,17 @@ int main(int argc, char* argv[]) {
     InitialiserGraphique();
   	CreerFenetre(5,5,1000,1000);
 
-  	int gridLength = 40, gridWidth = 60, appleAmount = 5, snakeSize = 10, barrierAmount = 0, snakeSpeed = 1;
+  	S_parameter parameter;
+  	parameter.gridWidth = 60;
+  	parameter.gridLength = 40;
+  	parameter.appleAmount = 5;
+  	parameter.barrierAmount = 0;
+  	parameter.snakeSize = 10;
+  	parameter.snakeSpeed = 1;
 
-  	//Menu(&gridLength, &gridWidth, &appleAmount, &snakeSize, &barrierAmount, &snakeSpeed);
+  	//Menu(&parameters);
 
-  	Start(gridWidth, gridLength, appleAmount, snakeSize, barrierAmount, snakeSpeed);
+  	Start(&parameter);
 
     FermerGraphique();
 
