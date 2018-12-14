@@ -5,22 +5,22 @@
 
 int main(int argc, char* argv[]) {
 
-    InitialiserGraphique();
-  	CreerFenetre(5,5,1000,1000);
+  InitialiserGraphique();
+	CreerFenetre(5,5,1000,1000);
 
-  	S_parameter parameter;
-  	parameter.gridWidth = 60;
-  	parameter.gridLength = 40;
-  	parameter.appleAmount = 5;
-  	parameter.barrierAmount = 0;
-  	parameter.snakeSize = 10;
-  	parameter.snakeSpeed = 1;
+	S_parameter parameter;
+	parameter.gridWidth = 60;
+	parameter.gridLength = 40;
+	parameter.appleAmount = 5;
+	parameter.barrierAmount = 0;
+	parameter.snakeSize = 10;
+	parameter.snakeSpeed = 1;
 
-  	//Menu(&parameters);
+	//Menu(&parameters);
 
-  	Start(&parameter);
+	Start(&parameter);
 
-    FermerGraphique();
+  FermerGraphique();
 
-	exit(0);
+  return 0;
 }
