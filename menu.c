@@ -10,16 +10,16 @@ int screen_1(S_parameter* parameter) {
 
 	ChoisirEcran(1);
  	EffacerEcran(CouleurParNom("black"));
-  ChoisirCouleurDessin(CouleurParNom("white"));
+  	ChoisirCouleurDessin(CouleurParNom("white"));
  	EcrireTexte(250-x1/2, 250-y/2, "SNAKE", 2);
  	EcrireTexte(250-x2/2, 280-y/2, "double click or touch to continue", 1);
 
-  CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+  	CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 
  	while (!ToucheEnAttente() && !SourisCliquee()){}
 
-  if (ToucheEnAttente())
-    Touche();
+  	if (ToucheEnAttente())
+    	Touche();
 
  	return screen_2(parameter);
 }
@@ -35,9 +35,9 @@ int screen_2(S_parameter* parameter) {
 	int x12 = TailleChaineEcran("START", 2);
 	int x22 = TailleChaineEcran("SETTINGS", 2);
 	int x32 = TailleChaineEcran("QUIT", 2);
-  int x11 = TailleChaineEcran("START", 1);
-  int x21 = TailleChaineEcran("SETTINGS", 1);
-  int x31 = TailleChaineEcran("QUIT", 1);
+  	int x11 = TailleChaineEcran("START", 1);
+  	int x21 = TailleChaineEcran("SETTINGS", 1);
+  	int x31 = TailleChaineEcran("QUIT", 1);
 
 	ChoisirEcran(1);
 	EffacerEcran(CouleurParNom("black"));
@@ -75,11 +75,11 @@ int screen_2(S_parameter* parameter) {
 				cursor += 1;
 			if (T == XK_Right) {
 				if (cursor == 0) 
-					return screen_3_1(parameter);
+					return 1;
 				if (cursor == 1) 
-					return screen_3_2(parameter);
+					return screen_3(parameter);
 				if (cursor == 2) 
-					return screen_3_3(parameter);
+					return -1;
 			}
 			if (T == XK_Left)
 				return screen_1(parameter);
@@ -94,19 +94,84 @@ int screen_2(S_parameter* parameter) {
 	}
 }
 
-int screen_3_1(S_parameter* parameter) {
-	return 1;
+int screen_3(S_parameter* parameter) {
+
+	int y2sup = TailleSupPolice(2);
+    int y2inf = TailleInfPolice(2);
+    int y2 = (y2sup+y2inf)/2;
+    int y1sup = TailleSupPolice(1);
+    int y1inf = TailleInfPolice(1);
+    int y1 = (y1sup+y1inf)/2;
+    int x11 = TailleChaineEcran("Field Size", 1);
+  	int x21 = TailleChaineEcran("Apple amount", 1);
+  	int x31 = TailleChaineEcran("Snake size", 1);
+	int x12 = TailleChaineEcran("Field Size", 2);
+  	int x22 = TailleChaineEcran("Apple amount", 2);
+  	int x32 = TailleChaineEcran("Snake size", 2);
+
+  	ChoisirEcran(1);
+	EffacerEcran(CouleurParNom("black"));
+	EcrireTexte(3, 10, "Menu > Settings", 0);
+	EcrireTexte(250-x12/2, 200-y2/2, "Field Size", 2);
+	EcrireTexte(250-x21/2, 250-y1/2, "Apple amount", 1);
+	EcrireTexte(250-x31/2, 300-y1/2, "Snake size", 1);
+
+	ChoisirEcran(3);
+	EffacerEcran(CouleurParNom("black"));
+	EcrireTexte(3, 10, "Menu > Settings", 0);
+	EcrireTexte(250-x11/2, 200-y1/2, "Field Size", 1);
+	EcrireTexte(250-x22/2, 250-y2/2, "Apple amount", 2);
+	EcrireTexte(250-x31/2, 300-y1/2, "Snake size", 1);
+
+	ChoisirEcran(3);
+	EffacerEcran(CouleurParNom("black"));
+	EcrireTexte(3, 10, "Menu > Settings", 0);
+	EcrireTexte(250-x11/2, 200-y1/2, "Field Size", 1);
+	EcrireTexte(250-x21/2, 250-y1/2, "Apple amount", 1);
+	EcrireTexte(250-x32/2, 300-y2/2, "Snake size", 2);
+
+	CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+
+	int cursor = 0;
+
+	while (True) {
+
+		if (ToucheEnAttente()) {
+
+			int T = Touche();
+			if (T == XK_Up && cursor != 0)
+				cursor -= 1;
+			if (T == XK_Down && cursor != 2)
+				cursor += 1;
+			if (T == XK_Right) {
+				if (cursor == 0) 
+					return screen_4_1(parameter);
+				if (cursor == 1) 
+					return screen_4_2(parameter);
+				if (cursor == 2) 
+					return screen_4_3(parameter);
+			}
+			if (T == XK_Left)
+				return screen_2(parameter);
+
+			if (cursor == 0)
+				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			else if (cursor == 1)
+				CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
+			else 
+				CopierZone(3, 0, 0, 0, 500, 500, 0, 0);
+		}
+	}
 }
 
-int screen_3_2(S_parameter* parameter) {
+int screen_4_1(S_parameter* parameter) {
 
 }
 
-int screen_3_3(S_parameter* parameter) {
-	return -1;
+int screen_4_2(S_parameter* parameter) {
+
 }
 
-int screen_4(S_parameter* parameter) {
+int screen_4_3(S_parameter* parameter) {
 
-  
 }

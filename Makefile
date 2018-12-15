@@ -1,11 +1,9 @@
 OFILES = main.o \
 		 menu.o \
-		 settings.o \
 		 start.o \
 		 game.o
 
 HFILES = menu.h \
-		 settings.h \
 		 defines.h \
 		 coord.h \
 		 case.h \
@@ -13,11 +11,11 @@ HFILES = menu.h \
 		 snake.h \
 		 player.h \
 		 start.h \
-		 game.h
+		 game.h \
+		 node.h
 
 CFILES = main.c \
          menu.c \
-         settings.c \
          start.c \
          game.c
 
@@ -31,13 +29,10 @@ a.out : $(OFILES)
 main.o : main.c parameter.h menu.h start.h
 	gcc -c main.c
 
-menu.o : menu.c menu.h settings.h start.h
+menu.o : menu.c menu.h start.h
 	gcc -c menu.c
-
-settings.o : settings.c settings.h
-	gcc -c settings.c
-
-start.o : start.c start.h case.h coord.h snake.h direction.h
+	
+start.o : start.c start.h case.h coord.h snake.h direction.h node.h
 	gcc -c start.c
 
 game.o : game.c game.h case.h snake.h defines.h

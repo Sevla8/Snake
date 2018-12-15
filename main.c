@@ -9,8 +9,8 @@ int main(int argc, char* argv[]) {
 	CreerFenetre(5,5,1000,1000);
 
 	S_parameter parameter;
-	parameter.gridWidth = 60;
-	parameter.gridLength = 40;
+	parameter.gridWidth = 160;
+	parameter.gridLength = 100;
 	parameter.appleAmount = 5;
 	parameter.barrierAmount = 0;
 	parameter.snakeSize = 10;
@@ -18,8 +18,12 @@ int main(int argc, char* argv[]) {
 
 	int choice = screen_1(&parameter);
 
-		if (choice == 1)
+		if (choice == 1) {
+			FermerGraphique();
+			InitialiserGraphique();
+			CreerFenetre(5,5,parameter.gridWidth*SIZE, parameter.gridLength*SIZE);
 			Start(&parameter);
+		}
 
   	FermerGraphique();
 

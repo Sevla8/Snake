@@ -67,6 +67,14 @@ void change_direction(S_snake* snake) {
 		else if (T == XK_Down && snake->direction != UP) {
 			snake->direction = DOWN;
 		}
+		else if (T == XK_space)
+			while (True) {
+				if (ToucheEnAttente()) {
+					int T = Touche();
+					if (T == XK_space)
+						break;
+				}
+			}
 	}
 }
 
@@ -119,3 +127,4 @@ void actualize_grid(E_case** grid, S_snake snake) {
 	grid[snake.head.x][snake.head.y] = SNAKE;
 	grid[snake.body[snake.size-2].x][snake.body[snake.size-2].y] = SNAKE;
 }
+

@@ -13,6 +13,12 @@ void Start(S_parameter* parameter) {
   	snake.direction = RIGHT;
   	snake.speed = parameter->snakeSpeed;
   	snake.size = parameter->snakeSize;
+    // for (int i = 0; i < snakeSize; i += 1) {
+    //   addTail();
+    // }
+    
+
+
   	snake.body = (S_coord*) malloc(sizeof(S_coord)*parameter->snakeSize);
   	for (int i = 0; i < parameter->snakeSize; i += 1) {
   		snake.body[i].x = parameter->gridWidth/2 - parameter->snakeSize/2 + i;
