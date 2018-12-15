@@ -52,7 +52,7 @@ void Start(S_parameter* parameter) {
 
     while (True) {
 
-      if (Microsecondes() >= time + 1000) {
+      if (Microsecondes() >= time + 1) {
         time = Microsecondes();
         actualize_grid(grid, snake);
         print(grid, parameter->gridWidth, parameter->gridLength);

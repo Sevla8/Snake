@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[]) {
 
-  InitialiserGraphique();
+  	InitialiserGraphique();
 	CreerFenetre(5,5,1000,1000);
 
 	S_parameter parameter;
@@ -16,11 +16,12 @@ int main(int argc, char* argv[]) {
 	parameter.snakeSize = 10;
 	parameter.snakeSpeed = 1;
 
-	//Menu(&parameters);
+	int choice = screen_1(&parameter);
 
-	Start(&parameter);
+		if (choice == 1)
+			Start(&parameter);
 
-  FermerGraphique();
+  	FermerGraphique();
 
-  return 0;
+  	return 0;
 }
