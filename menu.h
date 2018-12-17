@@ -10,5 +10,6 @@ int screen_3(S_parameter*);
 int screen_4_1(S_parameter*);
 int screen_4_2(S_parameter*);
 int screen_4_3(S_parameter*);
+char* inttostr(int);
 
 #endif

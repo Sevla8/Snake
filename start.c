@@ -1,6 +1,9 @@
 #include "start.h"
+#include <time.h>
 
 void Start(S_parameter* parameter) {
+
+    srand(time(NULL));
 
 	  E_case** grid = (E_case**) malloc(sizeof(E_case*)*parameter->gridWidth);
 
@@ -37,8 +40,8 @@ void Start(S_parameter* parameter) {
   	}
 
   	for (int k = 0; k < parameter->appleAmount; ) {
-  	   	int i = rand() % parameter->gridLength;
-  		int j = rand() % parameter->gridWidth;
+  	   	int i = rand() % parameter->gridWidth;
+  		  int j = rand() % parameter->gridLength;
   		if (grid[i][j] == GRASS) {	
   			grid[i][j] = APPLE;
   			k += 1;
@@ -46,8 +49,8 @@ void Start(S_parameter* parameter) {
   	}
 
   	for (int k = 0; k < parameter->barrierAmount; ) {
-  		int i = rand() % parameter->gridLength;
-  		int j = rand() % parameter->gridWidth;
+  		int i = rand() % parameter->gridWidth;
+  		int j = rand() % parameter->gridLength;
   		if (grid[i][j] == GRASS) {
   			grid[i][j] = BARRIER;
   			k += 1;
@@ -58,7 +61,7 @@ void Start(S_parameter* parameter) {
 
     while (True) {
 
-      if (Microsecondes() >= time + 1) {
+      if (Microsecondes() >= time) {
         time = Microsecondes();
         actualize_grid(grid, snake);
         print(grid, parameter->gridWidth, parameter->gridLength);
