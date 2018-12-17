@@ -91,7 +91,8 @@ int crash(S_snake snake, E_case** grid) {
 		}
 	}
 
-	//serpent sort du terrain
+	// if (snake.head.x < 0 || snake.head.x > )
+	// 	return 1;
 
 	return 0;
 }
@@ -127,4 +128,3 @@ void actualize_grid(E_case** grid, S_snake snake) {
 	grid[snake.head.x][snake.head.y] = SNAKE;
 	grid[snake.body[snake.size-2].x][snake.body[snake.size-2].y] = SNAKE;
 }
-

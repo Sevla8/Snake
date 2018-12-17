@@ -1,5 +1,26 @@
 #include "menu.h"
-#include <stdlib.h>
+
+char* inttostr(int nb){
+	if (nb == 0){
+		char* tab = (char*) malloc(sizeof(char) * 2);
+		tab[0] = '0'; tab[1] = '\0';
+		return tab;
+	}
+	int cp = nb;
+	int l = 0;
+	while (cp != 0){
+		cp = cp / 10;
+		l = l+1;
+	}
+	cp = nb;
+	char* tab = (char*) malloc(sizeof(char) * (l + 1));
+	for (int i = 0; i < l; i = i+1){
+		tab[l-1-i] = cp % 10 + 48;
+		cp = cp / 10;
+	}
+	tab[l] = '\0';
+	return tab;
+}
 
 int screen_1(S_parameter* parameter) {
 
@@ -345,49 +366,5 @@ int screen_4_3(S_parameter* parameter) {
 
 			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 		}
-	}
-}
-
-
-
-
-char* inttostr(int nb){
-	if (nb == 0){
-		char* tab = (char*) malloc(sizeof(char) * 2);
-		tab[0] = '0'; tab[1] = '\0';
-		return tab;
-	}
-	else if (nb > 0){
-		int cp = nb;
-		int l = 0;
-		while (cp != 0){
-			cp = cp / 10;
-			l = l+1;
-		}
-		cp = nb;
-		char* tab = (char*) malloc(sizeof(char) * (l + 1));
-		for (int i = 0; i < l; i = i+1){
-			tab[l-1-i] = cp % 10 + 48;
-			cp = cp / 10;
-		}
-		tab[l] = '\0';
-		return tab;
-	}	
-	else {
-		int cp = -nb;
-		int l = 0;
-		while (cp != 0){
-			cp = cp / 10;
-			l = l+1;
-		}
-		cp = -nb;
-		char* tab = (char*) malloc(sizeof(char) * (l + 2));
-		for (int i = 0; i < l; i = i+1){
-			tab[l-i] = cp % 10 + 48;
-			cp = cp / 10;
-		}
-		tab[0] = '-';
-		tab[l+1] = '\0';
-		return tab;
 	}
 }

@@ -16,9 +16,9 @@ int main(int argc, char* argv[]) {
 	parameter.snakeSize = 10;
 	parameter.snakeSpeed = 1;
 
-	int choice = screen_1(&parameter);
+	int play = screen_1(&parameter);
 
-		if (choice == 1) {
+		if (play == 1) {
 			FermerGraphique();
 			InitialiserGraphique();
 			CreerFenetre(5,5,parameter.gridWidth*SIZE, parameter.gridLength*SIZE);
