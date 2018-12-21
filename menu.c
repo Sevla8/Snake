@@ -88,6 +88,28 @@ int screen_2(S_parameter* parameter) {
 
 	while (True) {
 
+		SourisPosition();
+		if (_X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) {
+			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) 
+				return 1;
+		}
+
+		SourisPosition();
+		if (_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
+			CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
+				return screen_3(parameter);
+		}
+
+		SourisPosition();
+		if (_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300) {
+			CopierZone(3, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300)
+				return -1;
+		}
+
+
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
