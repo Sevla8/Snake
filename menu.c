@@ -24,17 +24,20 @@ char* inttostr(int nb){
 
 int screen_1(S_parameter* parameter) {
 
-  int ysup = TailleSupPolice(2);
-	int yinf = TailleInfPolice(2);
-	int y = (ysup+yinf);
+  	int y2sup = TailleSupPolice(2);
+	int y2inf = TailleInfPolice(2);
+	int y2 = (y2sup+y2inf);
+	int y1sup = TailleSupPolice(1);
+	int y1inf = TailleInfPolice(1);
+	int y1 = (y1sup+y1inf);
 	int x1 = TailleChaineEcran("SNAKE", 2);
 	int x2 = TailleChaineEcran("click or press a key to continue", 1);
 
 	ChoisirEcran(1);
  	EffacerEcran(CouleurParNom("black"));
   	ChoisirCouleurDessin(CouleurParNom("white"));
- 	EcrireTexte(250-x1/2, 250-y/2, "SNAKE", 2);
- 	EcrireTexte(250-x2/2, 280-y/2, "click or press a key to continue", 1);
+ 	EcrireTexte(250-x1/2, 250-y2/2, "SNAKE", 2);
+ 	EcrireTexte(250-x2/2, 280-y1/2, "click or press a key to continue", 1);
 
   	CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 
@@ -43,7 +46,47 @@ int screen_1(S_parameter* parameter) {
   	if (ToucheEnAttente())
     	Touche();
 
+ 	screen_help(parameter);
+
  	return screen_2(parameter);
+}
+
+void screen_help() {
+
+	int y2sup = TailleSupPolice(2);
+	int y2inf = TailleInfPolice(2);
+	int y2 = (y2sup+y2inf);
+	int y1sup = TailleSupPolice(1);
+	int y1inf = TailleInfPolice(1);
+	int y1 = (y1sup+y1inf);
+	int y0sup = TailleSupPolice(0);
+	int y0inf = TailleInfPolice(0);
+	int y0 = (y0sup+y0inf);
+	int x1 = TailleChaineEcran("COMMANDS", 2);
+	int x2 = TailleChaineEcran("press h to display this page again", 0);
+
+	ChoisirEcran(7);
+ 	EffacerEcran(CouleurParNom("black"));
+ 	EcrireTexte(250-x1/2, 50-y2/2, "COMMANDS", 2);
+ 	EcrireTexte(50, 100-y1/2, "In Menu :", 1);
+ 	EcrireTexte(150, 100-y0/2, "confirm : RIGHTARROW", 0);
+ 	EcrireTexte(150, 125-y0/2, "cancel : LEFTARROW", 0);
+ 	EcrireTexte(150, 150-y0/2, "increase : UPARROW", 0);
+ 	EcrireTexte(150, 175-y0/2, "decrease : DOWNARROW", 0);
+ 	EcrireTexte(150, 200-y0/2, "decrease : DOWNARROW", 0);
+ 	EcrireTexte(50, 300-y1/2, "In Game :", 1);
+ 	EcrireTexte(150, 325-y0/2, "move snake rightward : RIGHTARROW", 0);
+ 	EcrireTexte(150, 350-y0/2, "move snake leftward : LEFTARROW", 0);
+ 	EcrireTexte(150, 375-y0/2, "move snake upward : UPARROW", 0);
+ 	EcrireTexte(150, 400-y0/2, "move snake downward : DOWNARROW", 0);
+ 	EcrireTexte(50, 450-y1/2, "You can also use the mouse", 1);
+ 	EcrireTexte(490-x2, 475-y0/2, "press h to display this page again", 0);
+
+ 	CopierZone(7, 0, 0, 0, 500, 500, 0, 0);
+
+ 	unsigned long time = Microsecondes();
+
+ 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())){}
 }
 
 int screen_2(S_parameter* parameter) {
@@ -85,12 +128,39 @@ int screen_2(S_parameter* parameter) {
  	CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 
 	int cursor = 0;
+	int souris = 0;
 
 	while (True) {
+
+		SourisPosition();
+		if (_X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) {
+			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) 
+				return Start(parameter);
+		}
+
+		SourisPosition();
+		if (_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
+			CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
+				return screen_3(parameter);
+		}
+
+		SourisPosition();
+		if (_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300) {
+			CopierZone(3, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300)
+				return -1;
+		}
+
 
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
+			if (T == 'h') {
+				screen_help();
+				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			}
 			if (T == XK_Up && cursor != 0)
 				cursor -= 1;
 			if (T == XK_Down && cursor != 2)
@@ -158,9 +228,34 @@ int screen_3(S_parameter* parameter) {
 
 	while (True) {
 
+		SourisPosition();
+		if (_X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) {
+			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) 
+				return screen_4_1(parameter);
+		}
+
+		SourisPosition();
+		if (_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
+			CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
+				return screen_4_2(parameter);
+		}
+
+		SourisPosition();
+		if (_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300) {
+			CopierZone(3, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300)
+				return screen_4_3(parameter);
+		}
+
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
+			if (T == 'h') {
+				screen_help();
+				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			}
 			if (T == XK_Up && cursor != 0)
 				cursor -= 1;
 			if (T == XK_Down && cursor != 2)
@@ -236,9 +331,43 @@ int screen_4_1(S_parameter* parameter) {
 
 	while (True) {
 
+		SourisPosition();
+		if (_X >= 250-x10 && _X <= 250+x10 && _Y >= 200-y0*2 && _Y <= 200) {
+			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x10 && _X <= 250+x10 && _Y >= 200-y0*2 && _Y <= 200) {
+				parameter->gridWidth = 60;
+				parameter->gridLength = 40;
+				return screen_3(parameter);
+			}
+		}
+
+		SourisPosition();
+		if (_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
+			CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x20 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
+				parameter->gridWidth = 100;
+				parameter->gridLength = 60;
+				return screen_3(parameter);
+			}
+		}
+
+		SourisPosition();
+		if (_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300) {
+			CopierZone(3, 0, 0, 0, 500, 500, 0, 0);
+			if (SourisCliquee() && _X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300) {
+				parameter->gridWidth = 120;
+				parameter->gridLength = 80;
+				return screen_3(parameter);
+			}
+		}
+
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
+			if (T == 'h') {
+				screen_help();
+				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			}
 			if (T == XK_Up && cursor != 0)
 				cursor -= 1;
 			if (T == XK_Down && cursor != 2)
@@ -299,6 +428,10 @@ int screen_4_2(S_parameter* parameter) {
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
+			if (T == 'h') {
+				screen_help();
+				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			}
 			if (T == XK_Up && cursor != 10)
 				cursor += 1;
 			if (T == XK_Down && cursor != 1)
@@ -347,6 +480,10 @@ int screen_4_3(S_parameter* parameter) {
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
+			if (T == 'h') {
+				screen_help();
+				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			}
 			if (T == XK_Up && cursor != 20)
 				cursor += 1;
 			if (T == XK_Down && cursor != 1)
