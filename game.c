@@ -81,13 +81,13 @@ void change_direction(S_snake* snake) {
 int crash(S_snake snake, E_case** grid) {
 
 	if (grid[snake.head.x][snake.head.y] == BARRIER) {
-		return 1;
+		return game_over(parameter);
 	}
 
 	int s = snake.size;
 	for (int i = 0; i < s; i += 1) {
 		if (snake.body[i].x == snake.head.x && snake.body[i].y == snake.head.y) {
-			return 1;
+			return game_over(parameter);
 		}
 	}
 
@@ -128,3 +128,59 @@ void actualize_grid(E_case** grid, S_snake snake) {
 	grid[snake.head.x][snake.head.y] = SNAKE;
 	grid[snake.body[snake.size-2].x][snake.body[snake.size-2].y] = SNAKE;
 }
+
+int game_over(S_parameter* parameter){
+
+	int y2sup = TailleSupPolice(2);
+    int y2inf = TailleInfPolice(2);
+    int y2 = (y2sup+y2inf)/2;
+    int y1sup = TailleSupPolice(1);
+    int y1inf = TailleInfPolice(1);
+    int y1 = (y1sup+y1inf)/2;
+    int y0sup = TailleSupPolice(0);
+    int y0inf = TailleInfPolice(0);
+    int y0 = (y0sup+y0inf)/2;
+
+     int x = TailleChaineEcran("GAME OVER", 2);
+
+    ChoisirEcran(1);
+	EffacerEcran(CouleurParNom("black"));
+	EcrireTexte(gridWidth-x/2, gridLength-y2/2, "GAME OVER",2);
+
+	CopierZone(1, 0, 0, 0, gridWidth, gridLength, 0, 0);
+
+	unsigned long time = Microsecondes();
+
+ 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())){}
+
+	return screen_1(parameter);
+}
+
+/*void level_count(S_parameter* parameter, int next){
+
+	int y2sup = TailleSupPolice(2);
+    int y2inf = TailleInfPolice(2);
+    int y2 = (y2sup+y2inf)/2;
+    int y1sup = TailleSupPolice(1);
+    int y1inf = TailleInfPolice(1);
+    int y1 = (y1sup+y1inf)/2;
+
+    int x = TailleChaineEcran("LEVEL", 2);
+    int cursor;
+
+    if (next == 1){
+    	for(cursor=1; next==1 ; cursor=cursor+1){
+    		
+    		ChoisirEcran(1);
+			EffacerEcran(CouleurParNom("black"));
+			EcrireTexte(gridWidth-x/2, gridLength-y2/2, "LEVEL", 2);
+			EcrireTexte(gridWidth-x/2+x, gridLength-y2/2, inttostr(cursor), 2);
+    }
+	
+	CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+	unsigned long time = Microsecondes();
+
+ 	while(!(Microsecondes() > time + 3*SECONDE )){}
+
+}
+*/
