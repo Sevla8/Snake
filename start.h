@@ -1,15 +1,19 @@
 #ifndef START_H
 #define START_H
 
-#include <stdlib.h>
-#include <graph.h>
-#include "coord.h"
+#include "parameter.h"
+#include "player.h"
+#include "defines.h"
 #include "case.h"
 #include "snake.h"
-#include "direction.h"
+#include "list.h"
+#include "tools.h"
 #include "game.h"
-#include "parameter.h"
+#include "menu.h"
+#include <graph.h>
+#include <stdlib.h>
+#include <time.h>
 
-void Start(S_parameter*);
+int start(S_parameter*, S_player*);
 
 #endif

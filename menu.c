@@ -1,28 +1,22 @@
 #include "menu.h"
 
-char* inttostr(int nb){
-	if (nb == 0){
-		char* tab = (char*) malloc(sizeof(char) * 2);
-		tab[0] = '0'; tab[1] = '\0';
-		return tab;
-	}
-	int cp = nb;
-	int l = 0;
-	while (cp != 0){
-		cp = cp / 10;
-		l = l+1;
-	}
-	cp = nb;
-	char* tab = (char*) malloc(sizeof(char) * (l + 1));
-	for (int i = 0; i < l; i = i+1){
-		tab[l-1-i] = cp % 10 + 48;
-		cp = cp / 10;
-	}
-	tab[l] = '\0';
-	return tab;
-}
+int screen_1() {
 
-int screen_1(S_parameter* parameter) {
+	S_parameter parameter;
+	parameter.gridWidth = 60;
+	parameter.gridLength = 40;
+	parameter.appleAmount = 5;
+	parameter.barrierAmount = 0;
+	parameter.snakeSize = 10;
+	parameter.snakeSpeed = SECONDE/5;
+
+	S_player player;
+	player.score = 0;
+	player.level = 1;
+	player.time = 0;
+
+	InitialiserGraphique();
+	CreerFenetre(5,5,500,500);
 
   	int y2sup = TailleSupPolice(2);
 	int y2inf = TailleInfPolice(2);
@@ -46,9 +40,12 @@ int screen_1(S_parameter* parameter) {
   	if (ToucheEnAttente())
     	Touche();
 
- 	screen_help(parameter);
+ 	screen_help();
 
- 	return screen_2(parameter);
+ 	if (ToucheEnAttente())
+    	Touche();
+
+ 	return screen_2(&parameter, &player);
 }
 
 void screen_help() {
@@ -73,12 +70,11 @@ void screen_help() {
  	EcrireTexte(150, 125-y0/2, "cancel : LEFTARROW", 0);
  	EcrireTexte(150, 150-y0/2, "increase : UPARROW", 0);
  	EcrireTexte(150, 175-y0/2, "decrease : DOWNARROW", 0);
- 	EcrireTexte(150, 200-y0/2, "decrease : DOWNARROW", 0);
- 	EcrireTexte(50, 300-y1/2, "In Game :", 1);
- 	EcrireTexte(150, 325-y0/2, "move snake rightward : RIGHTARROW", 0);
- 	EcrireTexte(150, 350-y0/2, "move snake leftward : LEFTARROW", 0);
- 	EcrireTexte(150, 375-y0/2, "move snake upward : UPARROW", 0);
- 	EcrireTexte(150, 400-y0/2, "move snake downward : DOWNARROW", 0);
+ 	EcrireTexte(50, 275-y1/2, "In Game :", 1);
+ 	EcrireTexte(150, 275-y0/2, "move snake rightward : RIGHTARROW", 0);
+ 	EcrireTexte(150, 300-y0/2, "move snake leftward : LEFTARROW", 0);
+ 	EcrireTexte(150, 325-y0/2, "move snake upward : UPARROW", 0);
+ 	EcrireTexte(150, 350-y0/2, "move snake downward : DOWNARROW", 0);
  	EcrireTexte(50, 450-y1/2, "You can also use the mouse", 1);
  	EcrireTexte(490-x2, 475-y0/2, "press h to display this page again", 0);
 
@@ -86,10 +82,10 @@ void screen_help() {
 
  	unsigned long time = Microsecondes();
 
- 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())){}
+ 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
 }
 
-int screen_2(S_parameter* parameter) {
+int screen_2(S_parameter* parameter, S_player* player) {
 	
 	int y1sup = TailleSupPolice(1);
 	int y1inf = TailleInfPolice(1);
@@ -128,7 +124,6 @@ int screen_2(S_parameter* parameter) {
  	CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 
 	int cursor = 0;
-	int souris = 0;
 
 	while (True) {
 
@@ -136,14 +131,14 @@ int screen_2(S_parameter* parameter) {
 		if (_X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) {
 			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 			if (SourisCliquee() && _X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) 
-				return Start(parameter);
+				return start(parameter, player);
 		}
 
 		SourisPosition();
 		if (_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
 			CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
 			if (SourisCliquee() && _X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 		}
 
 		SourisPosition();
@@ -167,14 +162,14 @@ int screen_2(S_parameter* parameter) {
 				cursor += 1;
 			if (T == XK_Right) {
 				if (cursor == 0) 
-					return 1;
+					return start(parameter, player);
 				if (cursor == 1) 
-					return screen_3(parameter);
+					return screen_3(parameter, player);
 				if (cursor == 2) 
 					return -1;
 			}
 			if (T == XK_Left)
-				return screen_1(parameter);
+				return screen_1(parameter, player);
 
 			if (cursor == 0)
 				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
@@ -186,7 +181,7 @@ int screen_2(S_parameter* parameter) {
 	}
 }
 
-int screen_3(S_parameter* parameter) {
+int screen_3(S_parameter* parameter, S_player* player) {
 
 	int y2sup = TailleSupPolice(2);
     int y2inf = TailleInfPolice(2);
@@ -232,21 +227,21 @@ int screen_3(S_parameter* parameter) {
 		if (_X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) {
 			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 			if (SourisCliquee() && _X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200) 
-				return screen_4_1(parameter);
+				return screen_4_1(parameter, player);
 		}
 
 		SourisPosition();
 		if (_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
 			CopierZone(2, 0, 0, 0, 500, 500, 0, 0);
 			if (SourisCliquee() && _X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
-				return screen_4_2(parameter);
+				return screen_4_2(parameter, player);
 		}
 
 		SourisPosition();
 		if (_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300) {
 			CopierZone(3, 0, 0, 0, 500, 500, 0, 0);
 			if (SourisCliquee() && _X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300)
-				return screen_4_3(parameter);
+				return screen_4_3(parameter, player);
 		}
 
 		if (ToucheEnAttente()) {
@@ -262,14 +257,14 @@ int screen_3(S_parameter* parameter) {
 				cursor += 1;
 			if (T == XK_Right) {
 				if (cursor == 0) 
-					return screen_4_1(parameter);
+					return screen_4_1(parameter, player);
 				if (cursor == 1) 
-					return screen_4_2(parameter);
+					return screen_4_2(parameter, player);
 				if (cursor == 2) 
-					return screen_4_3(parameter);
+					return screen_4_3(parameter, player);
 			}
 			if (T == XK_Left)
-				return screen_2(parameter);
+				return screen_2(parameter, player);
 
 			if (cursor == 0)
 				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
@@ -281,7 +276,7 @@ int screen_3(S_parameter* parameter) {
 	}
 }
 
-int screen_4_1(S_parameter* parameter) {
+int screen_4_1(S_parameter* parameter, S_player* player) {
 
 	int y2sup = TailleSupPolice(2);
     int y2inf = TailleInfPolice(2);
@@ -337,7 +332,7 @@ int screen_4_1(S_parameter* parameter) {
 			if (SourisCliquee() && _X >= 250-x10 && _X <= 250+x10 && _Y >= 200-y0*2 && _Y <= 200) {
 				parameter->gridWidth = 60;
 				parameter->gridLength = 40;
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 			}
 		}
 
@@ -347,7 +342,7 @@ int screen_4_1(S_parameter* parameter) {
 			if (SourisCliquee() && _X >= 250-x20 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250) {
 				parameter->gridWidth = 100;
 				parameter->gridLength = 60;
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 			}
 		}
 
@@ -357,7 +352,7 @@ int screen_4_1(S_parameter* parameter) {
 			if (SourisCliquee() && _X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300) {
 				parameter->gridWidth = 120;
 				parameter->gridLength = 80;
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 			}
 		}
 
@@ -376,21 +371,21 @@ int screen_4_1(S_parameter* parameter) {
 				if (cursor == 0) {
 					parameter->gridWidth = 60;
 					parameter->gridLength = 40;
-					return screen_3(parameter);
+					return screen_3(parameter, player);
 				}
 				if (cursor == 1) {
 					parameter->gridWidth = 100;
 					parameter->gridLength = 60;
-					return screen_3(parameter);
+					return screen_3(parameter, player);
 				}
 				if (cursor == 2) {
 					parameter->gridWidth = 120;
 					parameter->gridLength = 80;
-					return screen_3(parameter);
+					return screen_3(parameter, player);
 				}
 			}
 			if (T == XK_Left)
-				return screen_2(parameter);
+				return screen_3(parameter, player);
 
 			if (cursor == 0)
 				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
@@ -402,7 +397,7 @@ int screen_4_1(S_parameter* parameter) {
 	}
 }
 
-int screen_4_2(S_parameter* parameter) {
+int screen_4_2(S_parameter* parameter, S_player* player) {
 
 	int y2sup = TailleSupPolice(2);
     int y2inf = TailleInfPolice(2);
@@ -438,10 +433,10 @@ int screen_4_2(S_parameter* parameter) {
 				cursor -= 1;
 			if (T == XK_Right) {
 				parameter->appleAmount = cursor;
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 			}
 			if (T == XK_Left)
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 
 			ChoisirEcran(1);
 			EffacerEcran(CouleurParNom("black"));
@@ -453,8 +448,8 @@ int screen_4_2(S_parameter* parameter) {
 		}
 	}
 }
-  
-int screen_4_3(S_parameter* parameter) {
+
+int screen_4_3(S_parameter* parameter, S_player* player) {
 
 	int y2sup = TailleSupPolice(2);
     int y2inf = TailleInfPolice(2);
@@ -490,10 +485,10 @@ int screen_4_3(S_parameter* parameter) {
 				cursor -= 1;
 			if (T == XK_Right) {
 				parameter->snakeSize = cursor;
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 			}
 			if (T == XK_Left)
-				return screen_3(parameter);
+				return screen_3(parameter, player);
 
 			ChoisirEcran(1);
 			EffacerEcran(CouleurParNom("black"));
@@ -504,4 +499,59 @@ int screen_4_3(S_parameter* parameter) {
 			CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 		}
 	}
+}
+
+void screen_lose(int width, int length, int score, int level) {
+
+	int y2sup = TailleSupPolice(2);
+    int y2inf = TailleInfPolice(2);
+    int y2 = (y2sup+y2inf)/2;
+    int y1sup = TailleSupPolice(1);
+    int y1inf = TailleInfPolice(1);
+    int y1 = (y1sup+y1inf)/2;
+
+    int x1 = TailleChaineEcran("GAME OVER", 2);
+    int x2 = TailleChaineEcran("SCORE REACHED", 2);
+    int x3 = TailleChaineEcran("LEVEL REACHED", 2);
+    int xs = TailleChaineEcran(inttostr(score), 1);
+    int xl = TailleChaineEcran(inttostr(level), 1);
+
+    ChoisirEcran(1);
+	EffacerEcran(CouleurParNom("black"));
+	ChoisirCouleurDessin(CouleurParNom("white"));
+	EcrireTexte(width/2 - x1/2, 100 - y2/2, "GAME OVER", 2);
+	EcrireTexte(width/2 - x2/2, 100 + 10*y2 , "SCORE REACHED", 2);
+	EcrireTexte(width/2 - xs/2, 100 + 12*y2, inttostr(score), 1);
+	EcrireTexte(width/2 - x3/2, 100 + 20*y2, "LEVEL REACHED", 2);
+	EcrireTexte(width/2 - xl/2, 100 + 22*y2, inttostr(level), 1);
+
+	CopierZone(1, 0, 0, 0, width, length, 0, 0);
+
+	unsigned long time = Microsecondes();
+
+ 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())){}
+}
+
+void screen_levelUp(int nextLevel, int width, int length) {
+
+	int y2sup = TailleSupPolice(2);
+    int y2inf = TailleInfPolice(2);
+    int y2 = (y2sup+y2inf)/2;
+
+    int x = TailleChaineEcran("LEVEL", 2); 
+    int y = TailleChaineEcran(inttostr(nextLevel), 2);
+
+    ChoisirEcran(1);
+	EffacerEcran(CouleurParNom("black"));
+	ChoisirCouleurDessin(CouleurParNom("white"));
+	EcrireTexte(width/2 - x/2, length/2 - y2/2 - 10, "LEVEL",2);
+	EcrireTexte(width/2 - y/2, length/2 - y2/2 + 10, inttostr(nextLevel),2);
+
+	ChoisirEcran(0);
+	EffacerEcran(CouleurParNom("black"));
+	CopierZone(1, 0, 0, 0, width, length, 0, 0);
+
+	unsigned long time = Microsecondes();
+
+ 	while(!(Microsecondes() > time + 5*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
 }

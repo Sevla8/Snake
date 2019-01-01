@@ -1,18 +1,21 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <stdlib.h>
-#include <graph.h>
-#include "case.h"
-#include "snake.h"
 #include "defines.h"
-#include "game.h"
+#include "case.h"
+#include "parameter.h"
+#include "snake.h"
+#include "tools.h"
+#include "list.h"
+#include <graph.h>
 
 void print(E_case**, int, int);
-void keep_moving(S_snake*, E_case**);
 void change_direction(S_snake*);
-int crash(S_snake, E_case**);
-void eat_apple(S_snake*, E_case**);
-void actualize_grid(E_case**, S_snake);
+void keep_moving(S_snake* snake);
+int crash(S_snake, E_case**, int, int);
+int eat_apple(S_snake*, E_case**);
+void actualize_grid(S_snake*, E_case**, int, int);
+void print_actualized_grid(S_coord, E_case**);
+void print_score(int, int, int);
 
 #endif

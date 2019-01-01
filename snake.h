@@ -3,13 +3,11 @@
 
 #include "coord.h"
 #include "direction.h"
+#include "list.h"
 
 struct snake {
 	E_direction direction;
-	int speed;
-	int size;
-	S_coord head;
-	S_coord* body;
+	S_list* head;
 };
 
 typedef struct snake S_snake;

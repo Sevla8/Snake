@@ -1,11 +1,14 @@
 #include "start.h"
-#include <time.h>
 
-void Start(S_parameter* parameter) {
+int start(S_parameter* parameter, S_player* player) {
 
-    srand(time(NULL));
+	srand(time(NULL));
 
-	  E_case** grid = (E_case**) malloc(sizeof(E_case*)*parameter->gridWidth);
+	FermerGraphique();
+    InitialiserGraphique();
+    CreerFenetre(10,10,parameter->gridWidth*SIZE+MARGE*2, parameter->gridLength*SIZE+MARGE+5*MARGE);
+
+    E_case** grid = (E_case**) malloc(sizeof(E_case*)*parameter->gridWidth);
 
   	for (int i = 0; i < parameter->gridWidth; i += 1) {
   		E_case* subGrid = (E_case*) malloc(sizeof(E_case)*parameter->gridLength);
@@ -14,35 +17,28 @@ void Start(S_parameter* parameter) {
 
   	S_snake snake;
   	snake.direction = RIGHT;
-  	snake.speed = parameter->snakeSpeed;
-  	snake.size = parameter->snakeSize;
-    // for (int i = 0; i < snakeSize; i += 1) {
-    //   addTail();
-    // }
-    
 
-
-  	snake.body = (S_coord*) malloc(sizeof(S_coord)*parameter->snakeSize);
+  	snake.head = NULL;
   	for (int i = 0; i < parameter->snakeSize; i += 1) {
-  		snake.body[i].x = parameter->gridWidth/2 - parameter->snakeSize/2 + i;
-  		snake.body[i].y = parameter->gridLength/2;
+  		S_coord coord;
+      	coord.x = parameter->gridWidth/2 - parameter->snakeSize/2 + i;
+      	coord.y = parameter->gridLength/2;
+  		snake.head = ajout_tete(snake.head, coord);
   	}
-  	snake.head = snake.body[parameter->snakeSize-1];
 
   	for (int i = 0; i < parameter->gridWidth; i += 1) {
-  		  for (int j = 0; j < parameter->gridLength; j += 1) {
-  			    grid[i][j] = GRASS;
-  		  }
+  		for (int j = 0; j < parameter->gridLength; j += 1)
+  			grid[i][j] = GRASS;
   	}
 
-  	for (int k = 0; k < parameter->snakeSize; k += 1) {
-  		  grid[snake.body[k].x][snake.body[k].y] = SNAKE;
+	for (S_list* cur = snake.head; cur != NULL; cur = cur->next) {
+  		grid[cur->coord.x][cur->coord.y] = SNAKE;
   	}
 
   	for (int k = 0; k < parameter->appleAmount; ) {
   	   	int i = rand() % parameter->gridWidth;
-  		  int j = rand() % parameter->gridLength;
-  		if (grid[i][j] == GRASS) {	
+  		int j = rand() % parameter->gridLength;
+  		if (grid[i][j] == GRASS) {
   			grid[i][j] = APPLE;
   			k += 1;
   		}
@@ -57,17 +53,53 @@ void Start(S_parameter* parameter) {
   		}  		
   	}
 
+  	screen_levelUp(player->level, parameter->gridWidth*SIZE + MARGE, parameter->gridLength*SIZE + 6*MARGE);
+
+  	print(grid, parameter->gridWidth, parameter->gridLength);
+
+  	print_score(player->score, parameter->gridWidth, parameter->gridLength);
+
   	unsigned long time = Microsecondes();
+  	int stop = 0;
+  	int nbApple = parameter->appleAmount;
 
-    while (True) {
+  	while (!stop && nbApple) {
 
-      if (Microsecondes() >= time) {
-        time = Microsecondes();
-        actualize_grid(grid, snake);
-        print(grid, parameter->gridWidth, parameter->gridLength);
-        change_direction(&snake);
-        keep_moving(&snake, grid);
-        eat_apple(&snake, grid);
-      }
-    }
+  		if (Microsecondes() >= time + parameter->snakeSpeed) {
+    	
+    		time = Microsecondes();
+
+    		change_direction(&snake);
+		  	keep_moving(&snake);
+		  	stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
+		  	if (!stop) {
+		  		int eat = eat_apple(&snake, grid);
+			  	player->score += SCORE*eat;
+				nbApple -= eat;
+			  	actualize_grid(&snake, grid, parameter->gridWidth, parameter->gridLength);
+			  	if (eat)
+			  		print_score(player->score, parameter->gridWidth, parameter->gridLength);
+		  	}
+		}
+	}
+
+	for (int i = 0; i < parameter->gridWidth; i += 1)
+		free(grid[i]);
+	free(grid);
+	for (S_list* cur = snake.head; cur != NULL; cur = cur->next)
+		free(cur);
+
+	if (!nbApple) {
+		player->level += 1;
+		parameter->barrierAmount += 1;
+		parameter->appleAmount += 1;
+		parameter->snakeSpeed /= 2;
+		start(parameter, player);
+	}
+
+	if (stop == 1) {
+		screen_lose(parameter->gridWidth*SIZE + MARGE, parameter->gridLength*SIZE + 6*MARGE, player->score, player->level);
+		FermerGraphique();
+		screen_1();
+	}
 }
