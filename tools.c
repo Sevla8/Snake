@@ -20,7 +20,7 @@ char* inttostr(int nb){
 	}
 	tab[l] = '\0';
 	return tab;
-}
+} 
 
 S_list* ajout_tete(S_list* head, S_coord coord) {
 	S_list* new = (S_list*) malloc(sizeof(S_list));

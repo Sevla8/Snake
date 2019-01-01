@@ -31,7 +31,7 @@ void print(E_case** grid, int width, int length) {
  	CopierZone(1, 0, 0, 0, width*SIZE, length*SIZE, MARGE, MARGE);
 }
 
-void change_direction(S_snake* snake) {
+int change_direction(S_snake* snake) {
 
 	if (SourisCliquee()) {
 
@@ -64,15 +64,20 @@ void change_direction(S_snake* snake) {
 		else if (T == XK_Down && snake->direction != UP)
 			snake->direction = DOWN;
 
-		// else if (T == XK_space) {
-		// 	while (True) {
-		// 		if (ToucheEnAttente()) {
-		// 			int T = Touche();
-		// 			if (T == XK_space)
-		// 				break;
-		// 		}
-		// 	}
-		// }
+		else if (T == XK_space) {
+			while (True) {
+				if (ToucheEnAttente()) {
+					int T = Touche();
+					if (T == XK_space)
+						return -1;
+				}
+			}
+		}
+
+		else if (T == XK_Escape) 
+			return 1;
+
+		return 0;
 	}
 }
 
@@ -200,4 +205,21 @@ void print_score(int score, int width, int length) {
 	EcrireTexte(0, ysup, inttostr(score), 2);
 
 	CopierZone(3, 0, 0, 0, x, y, width*SIZE+MARGE-x, length*SIZE+MARGE);
+}
+
+void print_watch(char* watch, int width, int length) {
+
+	ChoisirEcran(4);
+	EffacerEcran(CouleurParNom("black"));
+	ChoisirCouleurDessin(CouleurParNom("white"));
+
+	int ysup = TailleSupPolice(2);
+	int yinf = TailleInfPolice(2);
+	int y = (ysup+yinf);
+
+	int x = TailleChaineEcran(watch, 2);
+
+	EcrireTexte(0, ysup, watch, 2);
+
+	CopierZone(4, 0, 0, 0, x, y, MARGE, length*SIZE+MARGE);	
 }

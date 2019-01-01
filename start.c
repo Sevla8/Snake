@@ -56,20 +56,22 @@ int start(S_parameter* parameter, S_player* player) {
   	screen_levelUp(player->level, parameter->gridWidth*SIZE + MARGE, parameter->gridLength*SIZE + 6*MARGE);
 
   	print(grid, parameter->gridWidth, parameter->gridLength);
-
   	print_score(player->score, parameter->gridWidth, parameter->gridLength);
+  	print_watch(player->watch, parameter->gridWidth, parameter->gridLength);
 
+  	unsigned long t0 = Microsecondes();
   	unsigned long time = Microsecondes();
-  	int stop = 0;
+  	int stop = 0; 
+  	int esc = 0;
   	int nbApple = parameter->appleAmount;
 
-  	while (!stop && nbApple) {
+  	while (!stop && nbApple && esc != 1) {
 
   		if (Microsecondes() >= time + parameter->snakeSpeed) {
     	
     		time = Microsecondes();
 
-    		change_direction(&snake);
+    		esc = change_direction(&snake);
 		  	keep_moving(&snake);
 		  	stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
 		  	if (!stop) {
@@ -80,6 +82,30 @@ int start(S_parameter* parameter, S_player* player) {
 			  	if (eat)
 			  		print_score(player->score, parameter->gridWidth, parameter->gridLength);
 		  	}
+		}
+
+		if (esc == -1) {
+			t0 = Microsecondes();
+		}
+
+		if (Microsecondes() >= t0 + SECONDE) {
+			t0 = Microsecondes();
+			player->watch[4] = (char) ((int) player->watch[4] + 1);
+			if (player->watch[4] == ':')
+				player->watch[4] = '0';
+			if (player->watch[4] == '0')
+				player->watch[3] = (char) ((int) player->watch[3] + 1);
+			if (player->watch[3] == '6')
+				player->watch[3] = '0';
+			if (player->watch[4] == '0' && player->watch[3] == '0')
+				player->watch[1] = (char) ((int) player->watch[1] + 1);
+			if (player->watch[1] == ':')
+				player->watch[1] = '0';
+			if (player->watch[4] == '0' && player->watch[3] == '0' && player->watch[1] == '0')
+				player->watch[0] = (char) ((int) player->watch[0] + 1);
+			if (player->watch[0] == '6')
+				player->watch[0] = '0';
+			print_watch(player->watch, parameter->gridWidth, parameter->gridLength);
 		}
 	}
 
@@ -93,13 +119,13 @@ int start(S_parameter* parameter, S_player* player) {
 		player->level += 1;
 		parameter->barrierAmount += 1;
 		parameter->appleAmount += 1;
-		parameter->snakeSpeed /= 2;
-		start(parameter, player);
+		parameter->snakeSpeed /= 2;   //a peaufiner
+		return start(parameter, player);
 	}
 
-	if (stop == 1) {
+	if (stop || esc) {
 		screen_lose(parameter->gridWidth*SIZE + MARGE, parameter->gridLength*SIZE + 6*MARGE, player->score, player->level);
 		FermerGraphique();
-		screen_1();
+		return screen_1();
 	}
 }

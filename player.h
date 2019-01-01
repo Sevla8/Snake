@@ -4,7 +4,7 @@
 struct player {
 	unsigned long score;
 	int level;
-	unsigned long time;
+	char watch[6];
 };
 
 typedef struct player S_player;

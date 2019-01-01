@@ -8,12 +8,17 @@ int screen_1() {
 	parameter.appleAmount = 5;
 	parameter.barrierAmount = 0;
 	parameter.snakeSize = 10;
-	parameter.snakeSpeed = SECONDE/5;
+	parameter.snakeSpeed = SECONDE;
 
 	S_player player;
 	player.score = 0;
 	player.level = 1;
-	player.time = 0;
+	player.watch[0] = '0';
+	player.watch[1] = '0';
+	player.watch[2] = ':';
+	player.watch[3] = '0';
+	player.watch[4] = '0';
+	player.watch[5] = '\0';
 
 	InitialiserGraphique();
 	CreerFenetre(5,5,500,500);
@@ -37,13 +42,10 @@ int screen_1() {
 
  	while (!ToucheEnAttente() && !SourisCliquee()){}
 
-  	if (ToucheEnAttente())
+  	while (ToucheEnAttente())
     	Touche();
 
  	screen_help();
-
- 	if (ToucheEnAttente())
-    	Touche();
 
  	return screen_2(&parameter, &player);
 }
@@ -83,6 +85,9 @@ void screen_help() {
  	unsigned long time = Microsecondes();
 
  	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+
+ 	while (ToucheEnAttente())
+    	Touche();
 }
 
 int screen_2(S_parameter* parameter, S_player* player) {
@@ -148,6 +153,7 @@ int screen_2(S_parameter* parameter, S_player* player) {
 				return -1;
 		}
 
+		SourisCliquee();
 
 		if (ToucheEnAttente()) {
 
@@ -243,6 +249,8 @@ int screen_3(S_parameter* parameter, S_player* player) {
 			if (SourisCliquee() && _X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300)
 				return screen_4_3(parameter, player);
 		}
+
+		SourisCliquee();
 
 		if (ToucheEnAttente()) {
 
@@ -355,6 +363,8 @@ int screen_4_1(S_parameter* parameter, S_player* player) {
 				return screen_3(parameter, player);
 			}
 		}
+
+		SourisCliquee();
 
 		if (ToucheEnAttente()) {
 
@@ -529,7 +539,13 @@ void screen_lose(int width, int length, int score, int level) {
 
 	unsigned long time = Microsecondes();
 
+	while (ToucheEnAttente())
+    	Touche();
+
  	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())){}
+
+ 	while (ToucheEnAttente())
+    	Touche();
 }
 
 void screen_levelUp(int nextLevel, int width, int length) {
@@ -553,5 +569,11 @@ void screen_levelUp(int nextLevel, int width, int length) {
 
 	unsigned long time = Microsecondes();
 
+	while (ToucheEnAttente())
+    	Touche();
+
  	while(!(Microsecondes() > time + 5*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+
+ 	while (ToucheEnAttente())
+    	Touche();
 }
