@@ -29,4 +29,4 @@ game.o : game.c game.h
 .PHONY : clean
 
 clean :
-	rm -f $(OFILES) exe
+	rm -f $(OFILES) exe stats.txt

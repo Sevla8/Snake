@@ -2,7 +2,7 @@
 #define PLAYER_H 
 
 struct player {
-	unsigned long score;
+	int score;
 	int level;
 	char watch[6];
 };

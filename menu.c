@@ -42,10 +42,7 @@ int screen_1() {
 
  	while (!ToucheEnAttente() && !SourisCliquee()){}
 
-  	while (ToucheEnAttente())
-    	Touche();
-
- 	screen_help();
+  	screen_help();
 
  	return screen_2(&parameter, &player);
 }
@@ -85,9 +82,6 @@ void screen_help() {
  	unsigned long time = Microsecondes();
 
  	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
-
- 	while (ToucheEnAttente())
-    	Touche();
 }
 
 int screen_2(S_parameter* parameter, S_player* player) {
@@ -153,13 +147,21 @@ int screen_2(S_parameter* parameter, S_player* player) {
 				return -1;
 		}
 
-		SourisCliquee();
+		//vidage buffer souris
+		if (!(_X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200)
+			&& !(_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
+			&& !(_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300))
+			SourisCliquee();
 
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
 			if (T == 'h') {
 				screen_help();
+				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
+			}
+			if (T == 's') {
+				screen_stats();
 				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 			}
 			if (T == XK_Up && cursor != 0)
@@ -174,8 +176,6 @@ int screen_2(S_parameter* parameter, S_player* player) {
 				if (cursor == 2) 
 					return -1;
 			}
-			if (T == XK_Left)
-				return screen_1(parameter, player);
 
 			if (cursor == 0)
 				CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
@@ -250,7 +250,11 @@ int screen_3(S_parameter* parameter, S_player* player) {
 				return screen_4_3(parameter, player);
 		}
 
-		SourisCliquee();
+		//vidage buffer souris
+		if (!(_X >= 250-x11 && _X <= 250+x11 && _Y >= 200-y1*2 && _Y <= 200)
+			&& !(_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
+			&& !(_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300))
+			SourisCliquee();
 
 		if (ToucheEnAttente()) {
 
@@ -364,7 +368,11 @@ int screen_4_1(S_parameter* parameter, S_player* player) {
 			}
 		}
 
-		SourisCliquee();
+		//vidage buffer souris
+		if (!(_X >= 250-x10 && _X <= 250+x10 && _Y >= 200-y0*2 && _Y <= 200)
+			&& !(_X >= 250-x21 && _X <= 250+x21 && _Y >= 250-y1*2 && _Y <= 250)
+			&& !(_X >= 250-x31 && _X <= 250+x31 && _Y >= 300-y1*2 && _Y <= 300))
+			SourisCliquee();
 
 		if (ToucheEnAttente()) {
 
@@ -430,6 +438,9 @@ int screen_4_2(S_parameter* parameter, S_player* player) {
 
 	while (True) {
 
+		//vidage buffer souris
+		SourisCliquee();
+
 		if (ToucheEnAttente()) {
 
 			int T = Touche();
@@ -481,6 +492,9 @@ int screen_4_3(S_parameter* parameter, S_player* player) {
 	int cursor = 10;
 
 	while (True) {
+
+		//vidage buffer souris
+		SourisCliquee();
 
 		if (ToucheEnAttente()) {
 
@@ -539,13 +553,7 @@ void screen_lose(int width, int length, int score, int level) {
 
 	unsigned long time = Microsecondes();
 
-	while (ToucheEnAttente())
-    	Touche();
-
- 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())){}
-
- 	while (ToucheEnAttente())
-    	Touche();
+	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())){}
 }
 
 void screen_levelUp(int nextLevel, int width, int length) {
@@ -569,11 +577,40 @@ void screen_levelUp(int nextLevel, int width, int length) {
 
 	unsigned long time = Microsecondes();
 
-	while (ToucheEnAttente())
-    	Touche();
+	while(!(Microsecondes() > time + 5*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+}
 
- 	while(!(Microsecondes() > time + 5*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+void screen_stats() {
 
- 	while (ToucheEnAttente())
-    	Touche();
+	int y2sup = TailleSupPolice(2);
+	int y2inf = TailleInfPolice(2);
+	int y2 = (y2sup+y2inf);
+	int y1sup = TailleSupPolice(1);
+	int y1inf = TailleInfPolice(1);
+	int y1 = (y1sup+y1inf);
+
+	int save = open("save.txt", O_RDONLY);
+
+	int* level;
+	int* score;
+
+	read(save, level, sizeof(int));
+	read(save, score, sizeof(int));
+
+	char* levelx = inttostr(*level); 
+	char* scorex = inttostr(*score); 
+
+	ChoisirEcran(7);
+ 	EffacerEcran(CouleurParNom("black"));
+  	ChoisirCouleurDessin(CouleurParNom("white"));
+ 	EcrireTexte(50, 50, levelx, 2);
+ 	EcrireTexte(150, 50, scorex, 2);
+
+ 	CopierZone(7, 0, 0, 0, 500, 500, 0, 0);
+
+ 	unsigned long time = Microsecondes();
+
+ 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+
+ 	close(save);
 }

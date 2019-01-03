@@ -1,8 +1,8 @@
 #include "game.h"
 
-void print(E_case** grid, int width, int length) {
+void print(S_snake snake, E_case** grid, int width, int length) {
 
-	ChoisirEcran(1);
+	ChoisirEcran(5);
 	EffacerEcran(CouleurParNom("green"));
 
   	for (int i = 0; i < width; i += 1) {
@@ -16,19 +16,30 @@ void print(E_case** grid, int width, int length) {
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
  			else if (grid[i][j] == BARRIER) {
- 				ChoisirCouleurDessin(CouleurParNom("brown"));
+ 				ChoisirCouleurDessin(CouleurParNom("grey"));
  				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
  			else if (grid[i][j] == SNAKE) {
  				ChoisirCouleurDessin(CouleurParNom("yellow"));
- 				RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
+				if (i == snake.head->coord.x && j == snake.head->coord.y) {
+					if (snake.direction == RIGHT) 
+						RemplirTriangle(i*SIZE, j*SIZE, i*SIZE, j*SIZE + SIZE, i*SIZE + SIZE, j*SIZE + SIZE/2);
+					else if (snake.direction == LEFT) 
+						RemplirTriangle(i*SIZE + SIZE, j*SIZE, i*SIZE + SIZE, j*SIZE + SIZE, i*SIZE, j*SIZE + SIZE/2);
+					else if (snake.direction == UP) 
+						RemplirTriangle(i*SIZE, j*SIZE + SIZE, i*SIZE + SIZE, j*SIZE + SIZE, i*SIZE + SIZE/2, j*SIZE);
+					else if (snake.direction == DOWN) 
+						RemplirTriangle(i*SIZE, j*SIZE, i*SIZE + SIZE, j*SIZE, i*SIZE + SIZE/2, j*SIZE + SIZE);
+				}
+				else
+					RemplirRectangle(i*SIZE, j*SIZE, SIZE, SIZE);
  			}
  		}
  	}
 
  	ChoisirEcran(0);
  	EffacerEcran(CouleurParNom("black"));
- 	CopierZone(1, 0, 0, 0, width*SIZE, length*SIZE, MARGE, MARGE);
+ 	CopierZone(5, 0, 0, 0, width*SIZE, length*SIZE, MARGE, MARGE);
 }
 
 int change_direction(S_snake* snake) {
@@ -69,7 +80,7 @@ int change_direction(S_snake* snake) {
 				if (ToucheEnAttente()) {
 					int T = Touche();
 					if (T == XK_space)
-						return -1;
+						break;
 				}
 			}
 		}
@@ -109,7 +120,7 @@ int crash(S_snake snake, E_case** grid, int width, int length) {
 	if (grid[snake.head->coord.x][snake.head->coord.y] == BARRIER)
 		return 1;
 
-	for (S_list* cur = snake.head->next; cur != NULL; cur = cur->next) {
+	for (S_list* cur = snake.head->next; cur->next != NULL; cur = cur->next) {
 		if (snake.head->coord.x == cur->coord.x && snake.head->coord.y == cur->coord.y)
 			return 1;
 	}
@@ -117,7 +128,7 @@ int crash(S_snake snake, E_case** grid, int width, int length) {
 	return 0;	
 }
 
-int eat_apple(S_snake* snake, E_case** grid) {
+int eat_apple(S_snake* snake, E_case** grid, int width, int length) {
 
 	int k = 0;
 
@@ -143,6 +154,9 @@ int eat_apple(S_snake* snake, E_case** grid) {
 		}	
 
 		snake->head = ajout_tete(snake->head, coord);
+
+		if (crash(*snake, grid, width, length))
+			return k;
 	}
 
 	return k;
@@ -150,33 +164,27 @@ int eat_apple(S_snake* snake, E_case** grid) {
 
 void actualize_grid(S_snake* snake, E_case** grid, int width, int length) {
 
-	if (!crash(*snake, grid, width, length)) {
+	S_list* cur;
+	for (cur = snake->head; cur->next != NULL; cur = cur->next) {}
+	grid[cur->coord.x][cur->coord.y] = GRASS;
 
-		S_list* cur;
-		for (cur = snake->head; cur->next != NULL; cur = cur->next) {}
-		grid[cur->coord.x][cur->coord.y] = GRASS;
+	print_actualized_grid(*snake, cur->coord, grid, width, length);
 
-		print_actualized_grid(cur->coord, grid);
+	snake->head = supprimer_dernier(snake->head);
 
-		snake->head = supprimer_dernier(snake->head);
-
-		for (S_list* cur = snake->head; cur != NULL; cur = cur->next) {
-			if (grid[cur->coord.x][cur->coord.y] == GRASS) {
-				grid[cur->coord.x][cur->coord.y] = SNAKE;
-				print_actualized_grid(cur->coord, grid);
-			}
+	for (S_list* cur = snake->head; cur != NULL; cur = cur->next) {
+		if (grid[cur->coord.x][cur->coord.y] == GRASS) {
+			grid[cur->coord.x][cur->coord.y] = SNAKE;
 		}
+		print_actualized_grid(*snake, cur->coord, grid, width, length);
 	}
 
-	else {
-		snake->head = snake->head->next;
-		actualize_grid(snake, grid, width, length);
-	}
+	CopierZone(5, 0, 0, 0, width*SIZE, length*SIZE, MARGE, MARGE);
 }
 
-void print_actualized_grid(S_coord coord, E_case** grid) {
+void print_actualized_grid(S_snake snake, S_coord coord, E_case** grid, int width, int length) {
 
-	ChoisirEcran(1);
+	ChoisirEcran(5);
 
 	if (grid[coord.x][coord.y] == GRASS) {
 		ChoisirCouleurDessin(CouleurParNom("green"));
@@ -184,10 +192,19 @@ void print_actualized_grid(S_coord coord, E_case** grid) {
 	}
 	else if (grid[coord.x][coord.y] == SNAKE) {
 		ChoisirCouleurDessin(CouleurParNom("yellow"));
-		RemplirRectangle(coord.x*SIZE, coord.y*SIZE, SIZE, SIZE);
+		if (coord.x == snake.head->coord.x && coord.y == snake.head->coord.y) {
+			if (snake.direction == RIGHT) 
+				RemplirTriangle(coord.x*SIZE, coord.y*SIZE, coord.x*SIZE, coord.y*SIZE + SIZE, coord.x*SIZE + SIZE, coord.y*SIZE + SIZE/2);
+			else if (snake.direction == LEFT) 
+				RemplirTriangle(coord.x*SIZE + SIZE, coord.y*SIZE, coord.x*SIZE + SIZE, coord.y*SIZE + SIZE, coord.x*SIZE, coord.y*SIZE + SIZE/2);
+			else if (snake.direction == UP) 
+				RemplirTriangle(coord.x*SIZE, coord.y*SIZE + SIZE, coord.x*SIZE + SIZE, coord.y*SIZE + SIZE, coord.x*SIZE + SIZE/2, coord.y*SIZE);
+			else if (snake.direction == DOWN) 
+				RemplirTriangle(coord.x*SIZE, coord.y*SIZE, coord.x*SIZE + SIZE, coord.y*SIZE, coord.x*SIZE + SIZE/2, coord.y*SIZE + SIZE);
+		}
+		else
+			RemplirRectangle(coord.x*SIZE, coord.y*SIZE, SIZE, SIZE);
 	}
-
-	CopierZone(1, 0, coord.x*SIZE, coord.y*SIZE, SIZE, SIZE, MARGE+coord.x*SIZE, MARGE+coord.y*SIZE);
 }
 
 void print_score(int score, int width, int length) {
@@ -222,4 +239,32 @@ void print_watch(char* watch, int width, int length) {
 	EcrireTexte(0, ysup, watch, 2);
 
 	CopierZone(4, 0, 0, 0, x, y, MARGE, length*SIZE+MARGE);	
+}
+
+void save_stats(int* level, int* score) {
+
+	int prev = open("stats.txt", O_RDONLY);
+
+	int prev_level;
+	int prev_score;
+	char prev_watch[5];
+
+	read(prev, &prev_level, sizeof(int));
+	read(prev, &prev_score, sizeof(int));
+	read(prev, prev_watch, sizeof(char)*5);
+
+	close(prev);
+
+	if (prev_level < *level) {
+		int save = open("stats.txt", O_WRONLY | O_CREAT | O_TRUNC);
+		write(save, level, sizeof(int));
+		write(save, &prev_score, sizeof(int));
+		close(save);
+	}
+	if (prev_score < *score) {
+		int save = open("stats.txt", O_WRONLY | O_CREAT | O_TRUNC);
+		write(save, &prev_level, sizeof(int));
+		write(save, score, sizeof(int));
+		close(save);
+	}	
 }

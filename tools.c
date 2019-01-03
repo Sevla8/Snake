@@ -20,7 +20,15 @@ char* inttostr(int nb){
 	}
 	tab[l] = '\0';
 	return tab;
-} 
+}
+
+int strlength(char* str){
+	int taille = 0;
+	for(int i = 0; str[i] != '\0'; i = i+1){
+		taille = taille+1;
+	}
+	return taille;
+}
 
 S_list* ajout_tete(S_list* head, S_coord coord) {
 	S_list* new = (S_list*) malloc(sizeof(S_list));
@@ -43,6 +51,18 @@ S_list* supprimer_dernier(S_list* head) {
 			tmp->next = NULL;
 			free(cur);
 			return head;
+		}
+	}
+	return NULL;
+}
+
+S_list* supprimer_premier(S_list* head) {
+	if (head != NULL) {
+		S_list* tmp = head->next;
+		if (tmp != NULL) {
+			tmp->prev = NULL;
+			free(head);
+			return tmp;
 		}
 	}
 	return NULL;
