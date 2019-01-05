@@ -582,35 +582,52 @@ void screen_levelUp(int nextLevel, int width, int length) {
 
 void screen_stats() {
 
-	int y2sup = TailleSupPolice(2);
-	int y2inf = TailleInfPolice(2);
-	int y2 = (y2sup+y2inf);
-	int y1sup = TailleSupPolice(1);
-	int y1inf = TailleInfPolice(1);
-	int y1 = (y1sup+y1inf);
+	int statLevel = open("level.txt", O_RDONLY);
+	int statScore = open("score.txt", O_RDONLY);
 
-	int save = open("save.txt", O_RDONLY);
+	if (statLevel != -1 && statScore != -1) {
 
-	int* level;
-	int* score;
+		char* level = (char*) malloc(sizeof(char)*10);
+		memset(level, 0, sizeof(char)*10);
+		int rl = read(statLevel, level, sizeof(char)*10);
+		level = realloc(level, sizeof(char)*rl);
+		close(statLevel);
 
-	read(save, level, sizeof(int));
-	read(save, score, sizeof(int));
+		char* score = (char*) malloc(sizeof(char)*10);
+		memset(score, 0, sizeof(char)*10);
+		int rs = read(statScore, score, sizeof(char)*10);
+		score = realloc(score, sizeof(char)*rs);
+		close(statScore);
 
-	char* levelx = inttostr(*level); 
-	char* scorex = inttostr(*score); 
+		int y2sup = TailleSupPolice(2);
+		int y2inf = TailleInfPolice(2);
+		int y2 = (y2sup+y2inf);
+		int y1sup = TailleSupPolice(1);
+		int y1inf = TailleInfPolice(1);
+		int y1 = (y1sup+y1inf);
+		int y0sup = TailleSupPolice(0);
+		int y0inf = TailleInfPolice(0);
+		int y0 = (y0sup+y0inf);
 
-	ChoisirEcran(7);
- 	EffacerEcran(CouleurParNom("black"));
-  	ChoisirCouleurDessin(CouleurParNom("white"));
- 	EcrireTexte(50, 50, levelx, 2);
- 	EcrireTexte(150, 50, scorex, 2);
+		int x1 = TailleChaineEcran("STATISTICS", 2);
+		int x2 = TailleChaineEcran("Level Max", 1);
+		int x3 = TailleChaineEcran("Score Max", 1);
+		int x4 = TailleChaineEcran(level, 1);
+		int x5 = TailleChaineEcran(score, 1);
 
- 	CopierZone(7, 0, 0, 0, 500, 500, 0, 0);
+		ChoisirEcran(7);
+	 	EffacerEcran(CouleurParNom("black"));
+	  	ChoisirCouleurDessin(CouleurParNom("white"));
+	  	EcrireTexte(250-x1/2, 50, "STATISTICS", 2);
+	 	EcrireTexte(250-x2/2, 150, "Level Max", 1);
+	 	EcrireTexte(250-x4/2, 200, level, 0);
+	 	EcrireTexte(250-x3/2, 350, "Score Max", 1);
+	 	EcrireTexte(250-x5/2, 400, score, 0);
 
- 	unsigned long time = Microsecondes();
+	 	CopierZone(7, 0, 0, 0, 500, 500, 0, 0);
 
- 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+	 	unsigned long time = Microsecondes();
 
- 	close(save);
+	 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+	}
 }

@@ -241,30 +241,32 @@ void print_watch(char* watch, int width, int length) {
 	CopierZone(4, 0, 0, 0, x, y, MARGE, length*SIZE+MARGE);	
 }
 
-void save_stats(int* level, int* score) {
+void save_stats(int level, int score) {
 
-	int prev = open("stats.txt", O_RDONLY);
+	int lastLevel = open("level.txt", O_RDONLY);
+	int lastScore = open("score.txt", O_RDONLY);
 
-	int prev_level;
-	int prev_score;
-	char prev_watch[5];
+	char prevLevel[10];
+	memset(prevLevel, 0, 10);
+	int rl = read(lastLevel, prevLevel, sizeof(char)*10);
+	close(lastLevel);
+	int levelx = strtoint(prevLevel);
 
-	read(prev, &prev_level, sizeof(int));
-	read(prev, &prev_score, sizeof(int));
-	read(prev, prev_watch, sizeof(char)*5);
+	char prevScore[10];
+	memset(prevScore, 0, 10);
+	int rs = read(lastScore, prevScore, sizeof(char)*10);
+	close(lastScore);
+	int scorex = strtoint(prevScore);
 
-	close(prev);
-
-	if (prev_level < *level) {
-		int save = open("stats.txt", O_WRONLY | O_CREAT | O_TRUNC);
-		write(save, level, sizeof(int));
-		write(save, &prev_score, sizeof(int));
-		close(save);
+	if (levelx < level) {
+		int saveLevel = open("level.txt", O_WRONLY | O_CREAT | O_TRUNC);
+		write(saveLevel, inttostr(level), sizeof(char)*strlength(inttostr(level)));
+		close(saveLevel);
 	}
-	if (prev_score < *score) {
-		int save = open("stats.txt", O_WRONLY | O_CREAT | O_TRUNC);
-		write(save, &prev_level, sizeof(int));
-		write(save, score, sizeof(int));
-		close(save);
+	
+	if (scorex < score) {
+		int saveScore = open("score.txt", O_WRONLY | O_CREAT | O_TRUNC);
+		write(saveScore, inttostr(score), sizeof(char)*strlength(inttostr(score)));
+		close(saveScore);
 	}	
 }

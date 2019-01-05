@@ -2,13 +2,13 @@
 
 int start(S_parameter* parameter, S_player* player) {
 
-  srand(time(NULL));
+  	srand(time(NULL));
 
 	FermerGraphique();
-  InitialiserGraphique();
-  CreerFenetre(10,10,parameter->gridWidth*SIZE+MARGE*2, parameter->gridLength*SIZE+MARGE+5*MARGE);
+  	InitialiserGraphique();
+  	CreerFenetre(10,10,parameter->gridWidth*SIZE+MARGE*2, parameter->gridLength*SIZE+MARGE+5*MARGE);
 
-  E_case** grid = (E_case**) malloc(sizeof(E_case*)*parameter->gridWidth);
+	E_case** grid = (E_case**) malloc(sizeof(E_case*)*parameter->gridWidth);
 
 	for (int i = 0; i < parameter->gridWidth; i += 1) {
 		E_case* subGrid = (E_case*) malloc(sizeof(E_case)*parameter->gridLength);
@@ -31,12 +31,12 @@ int start(S_parameter* parameter, S_player* player) {
 			grid[i][j] = GRASS;
 	}
 
-  for (S_list* cur = snake.head; cur != NULL; cur = cur->next) {
+  	for (S_list* cur = snake.head; cur != NULL; cur = cur->next) {
 		grid[cur->coord.x][cur->coord.y] = SNAKE;
 	}
 
 	for (int k = 0; k < parameter->appleAmount; ) {
-	  int i = rand() % parameter->gridWidth;
+	 	int i = rand() % parameter->gridWidth;
 		int j = rand() % parameter->gridLength;
 		if (grid[i][j] == GRASS) {
 			grid[i][j] = APPLE;
@@ -65,31 +65,31 @@ int start(S_parameter* parameter, S_player* player) {
 	int esc = 0;
 	int nbApple = parameter->appleAmount;
 
-  //vidage buffer clavier & souris
+  	//vidage buffer clavier & souris
 	while (ToucheEnAttente())
-  	Touche();
-  while (SourisCliquee())
-    SourisCliquee();
+  		Touche();
+  	while (SourisCliquee())
+    	SourisCliquee();
 
 	while (!stop && nbApple && !esc) {
 
 		if (Microsecondes() >= time + parameter->snakeSpeed) {
   	
-  		time = Microsecondes();
+	  		time = Microsecondes();
 
-  		esc = change_direction(&snake);
-	  	keep_moving(&snake);
-	  	stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
-	  	if (!stop) {
-	  		int eat = eat_apple(&snake, grid, parameter->gridWidth, parameter->gridLength);
-		  	player->score += SCORE*eat;
-			  nbApple -= eat;
-        stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
-        if (!stop)
-		  	  actualize_grid(&snake, grid, parameter->gridWidth, parameter->gridLength);
-		  	if (eat)
-		  		print_score(player->score, parameter->gridWidth, parameter->gridLength);
-	  	}
+	  		esc = change_direction(&snake);
+		  	keep_moving(&snake);
+		  	stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
+		  	if (!stop) {
+		  		int eat = eat_apple(&snake, grid, parameter->gridWidth, parameter->gridLength);
+			  	player->score += SCORE*eat;
+				nbApple -= eat;
+	        	stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
+	        	if (!stop)
+			  		actualize_grid(&snake, grid, parameter->gridWidth, parameter->gridLength);
+			  	if (eat)
+			  		print_score(player->score, parameter->gridWidth, parameter->gridLength);
+		  	}
 		}
 
 		if (Microsecondes() >= t0 + SECONDE) {
@@ -128,7 +128,7 @@ int start(S_parameter* parameter, S_player* player) {
 	}
 
 	if (stop || esc) {
-    save_stats(&(player->level), &(player->score));
+    	save_stats(player->level, player->score);
 		screen_lose(parameter->gridWidth*SIZE + MARGE, parameter->gridLength*SIZE + 6*MARGE, player->score, player->level);
 		FermerGraphique();
 		return screen_1();

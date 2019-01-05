@@ -30,6 +30,17 @@ int strlength(char* str){
 	return taille;
 }
 
+int strtoint(char* str){
+	if (strlength(str) != 0 && str[0] >= '0' && str[0] <= '9') {
+		int x = 0;
+		for (int i = 0; str[i] >= '0' && str[i] <= '9' && i < strlength(str); i = i+1){
+			x = x * 10 + (str[i]-48);
+		}
+		return x;
+	}
+	return 0;
+}
+
 S_list* ajout_tete(S_list* head, S_coord coord) {
 	S_list* new = (S_list*) malloc(sizeof(S_list));
 	new->coord.x = coord.x;

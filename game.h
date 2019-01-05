@@ -9,6 +9,7 @@
 #include "list.h"
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 #include <graph.h>
 
 void print(S_snake, E_case**, int, int);
@@ -20,6 +21,6 @@ void actualize_grid(S_snake*, E_case**, int, int);
 void print_actualized_grid(S_snake, S_coord, E_case**, int, int);
 void print_score(int, int, int);
 void print_watch(char*, int, int);
-void save_stats(int*, int*);
+void save_stats(int, int);
 
 #endif
