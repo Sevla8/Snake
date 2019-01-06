@@ -63,6 +63,7 @@ int start(S_parameter* parameter, S_player* player) {
 	unsigned long time = Microsecondes();
 	int stop = 0; 
 	int esc = 0;
+	int eat = 0;
 	int nbApple = parameter->appleAmount;
 
   	//vidage buffer clavier & souris
@@ -81,7 +82,7 @@ int start(S_parameter* parameter, S_player* player) {
 		  	keep_moving(&snake);
 		  	stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
 		  	if (!stop) {
-		  		int eat = eat_apple(&snake, grid, parameter->gridWidth, parameter->gridLength);
+		  		eat = eat_apple(&snake, grid, parameter->gridWidth, parameter->gridLength);
 			  	player->score += SCORE*eat;
 				nbApple -= eat;
 	        	stop = crash(snake, grid, parameter->gridWidth, parameter->gridLength);
@@ -89,7 +90,11 @@ int start(S_parameter* parameter, S_player* player) {
 			  		actualize_grid(&snake, grid, parameter->gridWidth, parameter->gridLength);
 			  	if (eat)
 			  		print_score(player->score, parameter->gridWidth, parameter->gridLength);
-		  	}
+				if (stop && eat) { //trop rapide on arrive pas a le voir
+					stopNeat(&snake, grid, parameter->gridWidth, parameter->gridLength);
+					// while(1){}
+		  		}
+			}
 		}
 
 		if (Microsecondes() >= t0 + SECONDE) {

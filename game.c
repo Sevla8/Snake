@@ -270,3 +270,14 @@ void save_stats(int level, int score) {
 		close(saveScore);
 	}	
 }
+
+void stopNeat(S_snake* snake, E_case** grid, int width, int length) {
+	grid[snake->head->next->coord.x][snake->head->next->coord.y] = SNAKE;
+	print_actualized_grid(*snake, snake->head->next->coord, grid, width, length);
+	print_actualized_grid(*snake, snake->head->next->next->coord, grid, width, length);
+	S_list* cur;
+	for (cur = snake->head; cur->next != NULL; cur = cur->next) {}
+	grid[cur->coord.x][cur->coord.y] = GRASS;
+	print_actualized_grid(*snake, cur->coord, grid, width, length);
+	CopierZone(5, 0, 0, 0, width*SIZE, length*SIZE, MARGE, MARGE);
+}

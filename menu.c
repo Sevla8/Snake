@@ -69,19 +69,25 @@ void screen_help() {
  	EcrireTexte(150, 125-y0/2, "cancel : LEFTARROW", 0);
  	EcrireTexte(150, 150-y0/2, "increase : UPARROW", 0);
  	EcrireTexte(150, 175-y0/2, "decrease : DOWNARROW", 0);
+ 	EcrireTexte(150, 200-y0/2, "You can also use the mouse", 0);
  	EcrireTexte(50, 275-y1/2, "In Game :", 1);
  	EcrireTexte(150, 275-y0/2, "move snake rightward : RIGHTARROW", 0);
  	EcrireTexte(150, 300-y0/2, "move snake leftward : LEFTARROW", 0);
  	EcrireTexte(150, 325-y0/2, "move snake upward : UPARROW", 0);
  	EcrireTexte(150, 350-y0/2, "move snake downward : DOWNARROW", 0);
- 	EcrireTexte(50, 450-y1/2, "You can also use the mouse", 1);
- 	EcrireTexte(490-x2, 475-y0/2, "press h to display this page again", 0);
+ 	EcrireTexte(150, 375-y0/2, "You can also use the mouse", 0);
+ 	EcrireTexte(490-x2, 450-y0/2, "press h to display this page again", 0);
+ 	EcrireTexte(490-x2, 475-y0/2, "press s to display your stats", 0);
 
  	CopierZone(7, 0, 0, 0, 500, 500, 0, 0);
 
  	unsigned long time = Microsecondes();
 
  	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+
+ 	//vidage buffer clavier
+ 	while (ToucheEnAttente())
+ 		Touche();
 }
 
 int screen_2(S_parameter* parameter, S_player* player) {
@@ -123,6 +129,10 @@ int screen_2(S_parameter* parameter, S_player* player) {
  	CopierZone(1, 0, 0, 0, 500, 500, 0, 0);
 
 	int cursor = 0;
+
+	//vidage buffer clavier
+	while (ToucheEnAttente())
+		Touche();
 
 	while (True) {
 
@@ -629,5 +639,9 @@ void screen_stats() {
 	 	unsigned long time = Microsecondes();
 
 	 	while(!(Microsecondes() > time + 10*SECONDE || ToucheEnAttente() || SourisCliquee())) {}
+
+	 	//vidage buffer clavier
+	 	while (ToucheEnAttente())
+	 		Touche();
 	}
 }

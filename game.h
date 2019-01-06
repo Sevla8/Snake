@@ -22,5 +22,6 @@ void print_actualized_grid(S_snake, S_coord, E_case**, int, int);
 void print_score(int, int, int);
 void print_watch(char*, int, int);
 void save_stats(int, int);
+void stopNeat(S_snake*, E_case**, int, int);
 
 #endif
