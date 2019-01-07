@@ -543,21 +543,24 @@ void screen_lose(int width, int length, int score, int level) {
     int y1sup = TailleSupPolice(1);
     int y1inf = TailleInfPolice(1);
     int y1 = (y1sup+y1inf)/2;
+    	int y0sup = TailleSupPolice(0);
+	int y0inf = TailleInfPolice(0);
+	int y0 = (y0sup+y0inf)/2;
 
     int x1 = TailleChaineEcran("GAME OVER", 2);
-    int x2 = TailleChaineEcran("SCORE REACHED", 2);
-    int x3 = TailleChaineEcran("LEVEL REACHED", 2);
-    int xs = TailleChaineEcran(inttostr(score), 1);
-    int xl = TailleChaineEcran(inttostr(level), 1);
+    int x2 = TailleChaineEcran("SCORE REACHED", 1);
+    int x3 = TailleChaineEcran("LEVEL REACHED", 1);
+    int xs = TailleChaineEcran(inttostr(score), 0);
+    int xl = TailleChaineEcran(inttostr(level), 0);
 
     ChoisirEcran(1);
 	EffacerEcran(CouleurParNom("black"));
 	ChoisirCouleurDessin(CouleurParNom("white"));
-	EcrireTexte(width/2 - x1/2, 100 - y2/2, "GAME OVER", 2);
-	EcrireTexte(width/2 - x2/2, 100 + 10*y2 , "SCORE REACHED", 2);
-	EcrireTexte(width/2 - xs/2, 100 + 12*y2, inttostr(score), 1);
-	EcrireTexte(width/2 - x3/2, 100 + 20*y2, "LEVEL REACHED", 2);
-	EcrireTexte(width/2 - xl/2, 100 + 22*y2, inttostr(level), 1);
+	EcrireTexte(width/2 - x1/2, 50 + y2, "GAME OVER", 2);
+	EcrireTexte(width/2 - x2/2, length/2 - 20 , "SCORE REACHED", 1);
+	EcrireTexte(width/2 - xs/2, length/2 + 20, inttostr(score), 0);
+	EcrireTexte(width/2 - x3/2, (length - y2 + length/2)/2, "LEVEL REACHED", 1);
+	EcrireTexte(width/2 - xl/2, (length - y2 + length/2)/2 + 40, inttostr(level), 0);
 
 	CopierZone(1, 0, 0, 0, width, length, 0, 0);
 
@@ -578,8 +581,8 @@ void screen_levelUp(int nextLevel, int width, int length) {
     ChoisirEcran(1);
 	EffacerEcran(CouleurParNom("black"));
 	ChoisirCouleurDessin(CouleurParNom("white"));
-	EcrireTexte(width/2 - x/2, length/2 - y2/2 - 10, "LEVEL",2);
-	EcrireTexte(width/2 - y/2, length/2 - y2/2 + 10, inttostr(nextLevel),2);
+	EcrireTexte(width/2 - x/2, length/2 - y2/2 - 20, "LEVEL",2);
+	EcrireTexte(width/2 - y/2, length/2 - y2/2 + 20, inttostr(nextLevel),2);
 
 	ChoisirEcran(0);
 	EffacerEcran(CouleurParNom("black"));
