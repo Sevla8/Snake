@@ -26,7 +26,9 @@ tools.o : tools.c tools.h
 game.o : game.c game.h
 	gcc -c game.c
 
+	touch level.txt; echo -n "1" > level.txt; touch score.txt; echo -n "0" > score.txt; 
+
 .PHONY : clean
 
 clean :
-	rm -f $(OFILES) exe
+	rm -f $(OFILES) exe level.txt score.txt

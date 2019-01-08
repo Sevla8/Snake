@@ -90,9 +90,10 @@ int start(S_parameter* parameter, S_player* player) {
 			  		actualize_grid(&snake, grid, parameter->gridWidth, parameter->gridLength);
 			  	if (eat)
 			  		print_score(player->score, parameter->gridWidth, parameter->gridLength);
-				if (stop && eat) { //trop rapide on arrive pas a le voir
+				if (stop && eat) { 
 					stopNeat(&snake, grid, parameter->gridWidth, parameter->gridLength);
-					// while(1){}
+					unsigned long x = Microsecondes();				//pour que l'on voit bien qu'il y a eu
+					while (Microsecondes() < x + SECONDE/10) {}		//eat avant crash, sinon trop rapide.
 		  		}
 			}
 		}

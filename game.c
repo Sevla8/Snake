@@ -1,4 +1,5 @@
 #include "game.h"
+#include <stdio.h>
 
 void print(S_snake snake, E_case** grid, int width, int length) {
 
@@ -57,22 +58,27 @@ int change_direction(S_snake* snake) {
 
 		else if ((snake->direction == UP || snake->direction == DOWN) && (_X > snake->head->coord.x*SIZE+MARGE+SIZE)) 
 			snake->direction = RIGHT;
+
+		else { //pour vider le buffer une fois qu'on est dans la direction voulu
+			while (SourisCliquee())
+				SourisCliquee();
+		}
 	}
 
 	if (ToucheEnAttente()) {
 
 		int T = Touche();
 
-		if (T == XK_Right && snake->direction != LEFT)
+		if (T == XK_Right && snake->direction != LEFT && snake->direction != RIGHT)
 			snake->direction = RIGHT;
 
-		else if (T == XK_Left && snake->direction != RIGHT)
+		else if (T == XK_Left && snake->direction != RIGHT && snake->direction != LEFT)
 			snake->direction = LEFT;
 
-		else if (T == XK_Up && snake->direction != DOWN)
+		else if (T == XK_Up && snake->direction != DOWN && snake->direction != UP)
 			snake->direction = UP;
 
-		else if (T == XK_Down && snake->direction != UP)
+		else if (T == XK_Down && snake->direction != UP && snake->direction != DOWN)
 			snake->direction = DOWN;
 
 		else if (T == XK_space) {
@@ -87,6 +93,11 @@ int change_direction(S_snake* snake) {
 
 		else if (T == XK_Escape) 
 			return 1;
+
+		else { //vider le buffer si par exemple on dirige le serpent en restant appuyé sur les touches
+			while (ToucheEnAttente())
+				Touche();
+		}
 
 		return 0;
 	}
@@ -244,26 +255,23 @@ void print_watch(char* watch, int width, int length) {
 void save_stats(int level, int score) {
 
 	int lastLevel = open("level.txt", O_RDONLY);
-	int lastScore = open("score.txt", O_RDONLY);
-
 	char prevLevel[10];
 	memset(prevLevel, 0, 10);
 	int rl = read(lastLevel, prevLevel, sizeof(char)*10);
 	close(lastLevel);
 	int levelx = strtoint(prevLevel);
-
-	char prevScore[10];
-	memset(prevScore, 0, 10);
-	int rs = read(lastScore, prevScore, sizeof(char)*10);
-	close(lastScore);
-	int scorex = strtoint(prevScore);
-
 	if (levelx < level) {
 		int saveLevel = open("level.txt", O_WRONLY | O_CREAT | O_TRUNC);
 		write(saveLevel, inttostr(level), sizeof(char)*strlength(inttostr(level)));
 		close(saveLevel);
 	}
-	
+
+	int lastScore = open("score.txt", O_RDONLY);
+	char prevScore[10];
+	memset(prevScore, 0, 10);
+	int rs = read(lastScore, prevScore, sizeof(char)*10);
+	close(lastScore);
+	int scorex = strtoint(prevScore);
 	if (scorex < score) {
 		int saveScore = open("score.txt", O_WRONLY | O_CREAT | O_TRUNC);
 		write(saveScore, inttostr(score), sizeof(char)*strlength(inttostr(score)));
