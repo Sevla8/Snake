@@ -1,5 +1,4 @@
 #include "game.h"
-#include <stdio.h>
 
 void init_snake(S_snake* snake, int size, int width, int length) {
 
