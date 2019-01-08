@@ -8,50 +8,11 @@ int start(S_parameter* parameter, S_player* player) {
   	InitialiserGraphique();
   	CreerFenetre(10,10,parameter->gridWidth*SIZE+MARGE*2, parameter->gridLength*SIZE+MARGE+5*MARGE);
 
-	E_case** grid = (E_case**) malloc(sizeof(E_case*)*parameter->gridWidth);
-
-	for (int i = 0; i < parameter->gridWidth; i += 1) {
-		E_case* subGrid = (E_case*) malloc(sizeof(E_case)*parameter->gridLength);
-		*(grid+i) = subGrid;
-	}
-
 	S_snake snake;
-	snake.direction = RIGHT;
+	init_snake(&snake, parameter->snakeSize, parameter->gridWidth, parameter->gridLength);
 
-	snake.head = NULL;
-	for (int i = 0; i < parameter->snakeSize; i += 1) {
-		S_coord coord;
-    	coord.x = parameter->gridWidth/2 - parameter->snakeSize/2 + i;
-    	coord.y = parameter->gridLength/2;
-		snake.head = ajout_tete(snake.head, coord);
-	}
-
-	for (int i = 0; i < parameter->gridWidth; i += 1) {
-		for (int j = 0; j < parameter->gridLength; j += 1)
-			grid[i][j] = GRASS;
-	}
-
-  	for (S_list* cur = snake.head; cur != NULL; cur = cur->next) {
-		grid[cur->coord.x][cur->coord.y] = SNAKE;
-	}
-
-	for (int k = 0; k < parameter->appleAmount; ) {
-	 	int i = rand() % parameter->gridWidth;
-		int j = rand() % parameter->gridLength;
-		if (grid[i][j] == GRASS) {
-			grid[i][j] = APPLE;
-			k += 1;
-		}
-	}
-
-	for (int k = 0; k < parameter->barrierAmount; ) {
-		int i = rand() % parameter->gridWidth;
-		int j = rand() % parameter->gridLength;
-		if (grid[i][j] == GRASS) {
-			grid[i][j] = BARRIER;
-			k += 1;
-		}  		
-	}
+	E_case** grid = (E_case**) malloc(sizeof(E_case*)*parameter->gridWidth);
+	init_grid(grid, *parameter, snake);
 
 	screen_levelUp(player->level, parameter->gridWidth*SIZE + MARGE, parameter->gridLength*SIZE + 6*MARGE);
 

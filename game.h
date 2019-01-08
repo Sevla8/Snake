@@ -12,6 +12,8 @@
 #include <string.h>
 #include <graph.h>
 
+void init_snake(S_snake*, int, int, int);
+void init_grid(E_case**, S_parameter, S_snake);
 void print(S_snake, E_case**, int, int);
 int change_direction(S_snake*);
 void keep_moving(S_snake* snake);

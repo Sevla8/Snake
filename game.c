@@ -1,6 +1,53 @@
 #include "game.h"
 #include <stdio.h>
 
+void init_snake(S_snake* snake, int size, int width, int length) {
+
+	snake->direction = RIGHT;
+	snake->head = NULL;
+	for (int i = 0; i < size; i += 1) {
+		S_coord coord;
+    	coord.x = width/2 - size/2 + i;
+    	coord.y = length/2;
+		snake->head = ajout_tete(snake->head, coord);
+	}
+}
+
+void init_grid(E_case** grid, S_parameter parameter, S_snake snake) {
+
+	for (int i = 0; i < parameter.gridWidth; i += 1) {
+		E_case* subGrid = (E_case*) malloc(sizeof(E_case)*parameter.gridLength);
+		*(grid+i) = subGrid;
+	}
+
+	for (int i = 0; i < parameter.gridWidth; i += 1) {
+		for (int j = 0; j < parameter.gridLength; j += 1)
+			grid[i][j] = GRASS;
+	}
+
+  	for (S_list* cur = snake.head; cur != NULL; cur = cur->next) {
+		grid[cur->coord.x][cur->coord.y] = SNAKE;
+	}
+
+	for (int k = 0; k < parameter.appleAmount; ) {
+	 	int i = rand() % parameter.gridWidth;
+		int j = rand() % parameter.gridLength;
+		if (grid[i][j] == GRASS) {
+			grid[i][j] = APPLE;
+			k += 1;
+		}
+	}
+
+	for (int k = 0; k < parameter.barrierAmount; ) {
+		int i = rand() % parameter.gridWidth;
+		int j = rand() % parameter.gridLength;
+		if (grid[i][j] == GRASS) {
+			grid[i][j] = BARRIER;
+			k += 1;
+		}  		
+	}
+}
+
 void print(S_snake snake, E_case** grid, int width, int length) {
 
 	ChoisirEcran(5);
