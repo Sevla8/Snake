@@ -8,7 +8,7 @@ int screen_1() {
 	parameter.appleAmount = 5;
 	parameter.barrierAmount = 0;
 	parameter.snakeSize = 10;
-	parameter.snakeSpeed = SECONDE;
+	parameter.snakeSpeed = SPEED;
 
 	S_player player;
 	player.score = 0;
