@@ -90,7 +90,7 @@ int start(S_parameter* parameter, S_player* player) {
 		player->level += 1;
 		parameter->barrierAmount += 1;
 		parameter->appleAmount += 1;
-		parameter->snakeSpeed = parameter->snakeSpeed * 3 / 4;
+		parameter->snakeSpeed = parameter->snakeSpeed * COEFF;
 		return start(parameter, player);
 	}
 
