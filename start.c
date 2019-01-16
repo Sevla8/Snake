@@ -83,8 +83,11 @@ int start(S_parameter* parameter, S_player* player) {
 	for (int i = 0; i < parameter->gridWidth; i += 1)
 		free(grid[i]);
 	free(grid);
-	for (S_list* cur = snake.head; cur != NULL; cur = cur->next)
-		free(cur);
+	for (S_list* cur = snake.head; cur != NULL;) {
+		S_list* tmp = cur;
+		cur = cur->next;
+		free(tmp);
+	}
 
 	if (!nbApple) {
 		player->level += 1;
